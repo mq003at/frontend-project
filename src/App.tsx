@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
+import AdminSettings from "./components/Cart/AdminSettings";
 import FrontPage from "./components/FrontPage/FrontPage";
 import Header from "./components/Header/Header";
 import { useAppDispatch, useAppSelector } from "./hooks/reduxHook";
@@ -20,6 +21,7 @@ const App = () => {
     <>
       <Header />
       <FrontPage />
+      <AdminSettings />
     </>
   );
 };

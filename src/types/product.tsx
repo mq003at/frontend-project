@@ -4,3 +4,5 @@ export interface UpdatedProduct {
     id: number,
     update: Partial<Product>
 }
+
+

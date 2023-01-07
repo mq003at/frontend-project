@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Product } from "../../types/common";
+import { Product, ResponseImage } from "../../types/common";
 import axios, { AxiosResponse } from "axios";
 import { UpdatedProduct } from "../../types/product";
 
@@ -40,6 +40,14 @@ export const deleteProduct = createAsyncThunk("deleteProduct", async (id: number
     console.log("delerr", e);
   }
 });
+
+export const uploadImage = createAsyncThunk("uploadImage", async (image: File) => {
+  try {
+    const res: AxiosResponse<ResponseImage | Error, any> = await axios.post(`https://api.escuelajs.co/api/v1/files/upload`);
+    const newProduct = 
+    return { message: res.data, status: res.request.status}
+  } catch (e) {console.log("uploadimgerr",e)}
+})
 
 const productSlice = createSlice({
   name: "productSlice",
@@ -120,6 +128,18 @@ const productSlice = createSlice({
       });
   },
 });
+
+const imageSlice = createSlie({
+  name: "imageSlice",
+  initialState: [] as File[],
+  reducers: {
+
+  },
+  extraReducers: (build) => {
+    build
+      .addCase()
+  }
+})
 
 export const productReducer = productSlice.reducer;
 export const { addAll, findProduct, sortAllByCategory, sortAllByPrice } = productSlice.actions;

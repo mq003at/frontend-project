@@ -23,6 +23,7 @@ const categorySlice = createSlice({
                 if (action.payload?.data && action.payload?.status === "200" && !(action.payload.data instanceof Error))  return action.payload.data;
                 else return state;
             })
+            
     }
 })
 

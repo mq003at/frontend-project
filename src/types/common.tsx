@@ -17,3 +17,8 @@ export interface Product extends Common {
     category: Category
 }
 
+export interface ResponseImage {
+    originalname: string,
+    filename: string,
+    location: string
+}
