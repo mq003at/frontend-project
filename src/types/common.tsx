@@ -22,3 +22,13 @@ export interface ResponseImage {
     filename: string,
     location: string
 }
+
+export interface UpdatedProduct {
+    id: number,
+    update: Partial<Product>
+}
+
+export interface AddProductWithImageParams {
+    imageArray: File[],
+    product: Product
+}

@@ -18,6 +18,7 @@ const AdminSettings: React.FC = (props) => {
     return (
         <div>
             <form onSubmit={uploadProductForm.handleSubmit}>
+                <p>ID:</p>
                 <p>Product name:</p>
                 <input id="name" name="name" type="text" value={uploadProductForm.values.name} onChange={uploadProductForm.handleChange} />
                 <p>Image:</p>

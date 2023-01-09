@@ -1,12 +1,13 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Product, ResponseImage } from "../../types/common";
+import { AddProductWithImageParams, Product, ResponseImage } from "../../types/common";
 import axios, { AxiosResponse } from "axios";
-import { UpdatedProduct } from "../../types/product";
+import { UpdatedProduct } from "../../types/common";
+import axiosInstance from "../../test/shared/sharedInstance";
 
 // Fetch all products from API; in case the fetch fails, use the backup one stored locally
 export const fetchAllProducts = createAsyncThunk("fetchAllProducts", async () => {
   try {
-    const res: AxiosResponse<Product[] | Error, any> = await axios.get("https://api.escuelajs.co/api/v1/products");
+    const res: AxiosResponse<Product[] | Error, any> = await axiosInstance.get("products");
     return { data: res.data, status: res.request.status };
   } catch (e: any) {
     throw new Error(e.message);
@@ -15,7 +16,7 @@ export const fetchAllProducts = createAsyncThunk("fetchAllProducts", async () =>
 
 export const addProductToServer = createAsyncThunk("addProductToServer", async (product: Product) => {
   try {
-    const res: AxiosResponse<Product | Error, any> = await axios.post("https://api.escuelajs.co/api/v1/products", product);
+    const res: AxiosResponse<Product | Error, any> = await axiosInstance.post("products", product);
     return res.data;
   } catch (e) {
     console.log("adderr", e);
@@ -23,9 +24,9 @@ export const addProductToServer = createAsyncThunk("addProductToServer", async (
 });
 
 // Take in an updated Product, generate metadata and update it on the server
-export const modifyProduct = createAsyncThunk("modifyProduct", async (updatedProduct: Product) => {
+export const modifyProduct = createAsyncThunk("modifyProduct", async ({ id, update }: UpdatedProduct) => {
   try {
-    const res: AxiosResponse<Product | Error, any> = await axios.put(`https://api.escuelajs.co/api/v1/products/${updatedProduct.id}`, updatedProduct);
+    const res: AxiosResponse<Product | Error, any> = await axiosInstance.put(`/products/${id}`, update);
     return res.data;
   } catch (e) {
     console.log("upderr", e);
@@ -34,20 +35,36 @@ export const modifyProduct = createAsyncThunk("modifyProduct", async (updatedPro
 
 export const deleteProduct = createAsyncThunk("deleteProduct", async (id: number) => {
   try {
-    const res: AxiosResponse<string | Error, any> = await axios.delete(`https://api.escuelajs.co/api/v1/products/${id}`);
+    const res: AxiosResponse<string | Error, any> = await axiosInstance.delete(`/products/${id}`);
     return { id: id, status: res.status, message: res.data };
   } catch (e) {
     console.log("delerr", e);
   }
 });
 
-export const uploadImage = createAsyncThunk("uploadImage", async (image: File) => {
+// Accept an array images and push them into the API.
+export const addProductAndImage = createAsyncThunk("addProductAndImage", async ({ imageArray, product }: AddProductWithImageParams) => {
   try {
-    const res: AxiosResponse<ResponseImage | Error, any> = await axios.post(`https://api.escuelajs.co/api/v1/files/upload`);
-    const newProduct = 
-    return { message: res.data, status: res.request.status}
-  } catch (e) {console.log("uploadimgerr",e)}
-})
+    const images: string[] = [];
+    for(const img of imageArray) {
+      const response: AxiosResponse<ResponseImage | Error, any> = await axiosInstance.post("/files/upload", img)
+      if (!(response.data instanceof Error) && response.data.location) images.push(response.data.location)
+    };
+
+    // Does it need to be 3?
+    if (images.length <= 0) {console.log ("images", images)} 
+    else {
+      const res2: AxiosResponse<Product | Error, any> = await axiosInstance.post("products", {
+        ...product,
+        images: images
+      });
+      return res2.data
+    }
+    
+  } catch (e) {
+    console.log("uploadimgerr", e);
+  }
+});
 
 const productSlice = createSlice({
   name: "productSlice",
@@ -112,6 +129,7 @@ const productSlice = createSlice({
       })
 
       .addCase(modifyProduct.fulfilled, (state, action) => {
+        console.log("Modify Product starts");
         return state.map((product: Product) => {
           if (!(action.payload instanceof Error) && product.id === action.payload?.id) return action.payload;
           return product;
@@ -121,25 +139,18 @@ const productSlice = createSlice({
       .addCase(deleteProduct.fulfilled, (state, action) => {
         if (action.payload) {
           const { id, status, message } = action.payload;
-          console.log("deletemsg", message)
           if (status === 200) return state.filter((product: Product) => product.id !== id);
-          else return state
-        }
-      });
+          else return state;
+        } 
+      })
+
+      // Testing using spread operator
+      .addCase(addProductAndImage.fulfilled, (state, action) => {
+        if (action.payload) return action.payload
+        else return state
+      })
   },
 });
-
-const imageSlice = createSlie({
-  name: "imageSlice",
-  initialState: [] as File[],
-  reducers: {
-
-  },
-  extraReducers: (build) => {
-    build
-      .addCase()
-  }
-})
 
 export const productReducer = productSlice.reducer;
 export const { addAll, findProduct, sortAllByCategory, sortAllByPrice } = productSlice.actions;

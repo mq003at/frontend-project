@@ -1,4 +1,4 @@
-import { addProductToServer, deleteProduct, fetchAllProducts, modifyProduct, sortAllByCategory, sortAllByPrice } from "../../redux/reducers/productReducer";
+import { addProductAndImage, addProductToServer, deleteProduct, fetchAllProducts, modifyProduct, sortAllByCategory, sortAllByPrice } from "../../redux/reducers/productReducer";
 import { store } from "../../redux/store";
 import { Product } from "../../types/common";
 import server from "../shared/server";
@@ -14,7 +14,6 @@ describe("Test actions", () => {
   // GET all data from product and parse it into product reducer
   test("Should fetch all", async () => {
     await store.dispatch(fetchAllProducts());
-    console.log(store.getState().productReducer);
     expect(store.getState().productReducer.length).toBe(3);
   });
 
@@ -38,54 +37,75 @@ describe("Test actions", () => {
       },
     };
     await store.dispatch(addProductToServer(newProduct));
-    expect(store.getState().productReducer.length).toBe(4);
   });
 
   test("Should fetch all after the add", async () => {
     await store.dispatch(fetchAllProducts());
-    console.log(store.getState().productReducer);
     expect(store.getState().productReducer.length).toBe(4);
   });
 
   test("Should modify the product", async () => {
-    const newProduct: Product = {
-      id: 2,
-      title: "Cotton Computer",
-      price: 444,
-      description: "The Football Is Good For Training And Recreational Purposes",
-      images: ["https://api.lorem.space/image?w=640&h=480&r=400", "https://api.lorem.space/image?w=640&h=480&r=263", "https://api.lorem.space/image?w=640&h=480&r=5425"],
-      creationAt: "2023-01-03T21:20:04.000Z",
-      updatedAt: "2023-01-03T21:20:04.000Z",
-      category: {
-        id: 5,
-        name: "Electronics",
-        image: "https://api.lorem.space/image?w=640&h=480&r=4933",
-        creationAt: "2023-01-03T21:20:03.000Z",
-        updatedAt: "2023-01-03T21:20:03.000Z",
-      },
-    };
-
-    await store.dispatch(modifyProduct(newProduct));
-    expect(store.getState().productReducer.length).toBe(4);
+    await store.dispatch(modifyProduct({id: 2, update: {price: 999}}));
+    expect((store.getState().productReducer.find((product: Product) => product.id === 2)).price).toBe(999);
   });
 
   test("Should sort by price", () => {
     store.dispatch(sortAllByPrice("asc"));
-    console.log("price sort", store.getState().productReducer);
+    expect(store.getState().productReducer[0].price).toBe(273);
   });
 
   test("Should sort by category", () => {
     store.dispatch(sortAllByCategory("asc"));
-    console.log("category sort", store.getState().productReducer);
   });
 
-  test("Should delete the added product", () => {
-    store.dispatch(deleteProduct(1))
-    console.log("finalState", store.getState().productReducer)
+  test("Should delete the added product", async () => {
+    await store.dispatch(deleteProduct(1))
+    expect(store.getState().productReducer.length).toBe(3);
+  })
+
+  test("Should add product with uploaded images", async () => {
+    const imageArray: File[] = [{
+      lastModified: 0,
+      name: "test file img",
+      webkitRelativePath: "",
+      size: 0,
+      type: "",
+      arrayBuffer: function (): Promise<ArrayBuffer> {
+        throw new Error("Function not implemented.");
+      },
+      slice: function (start?: number | undefined, end?: number | undefined, contentType?: string | undefined): Blob {
+        throw new Error("Function not implemented.");
+      },
+      stream: function () {
+        throw new Error("Function not implemented.");
+      },
+      text: function (): Promise<string> {
+        throw new Error("Function not implemented.");
+      }
+    }]
+
+    const product: Product = {
+      id: 248,
+      title: "One Two Three",
+      price: 273,
+      description: "The automobile layout consists of a front-engine design, with transaxle-type transmissions mounted at the rear of the engine and four wheel drive",
+      images: [],
+      creationAt: "2023-01-04T12:41:40.000Z",
+      updatedAt: "2023-01-04T12:41:40.000Z",
+      category: {
+        id: 4,
+        name: "Shoes",
+        image: "https://api.lorem.space/image/shoes?w=640&h=480&r=2020",
+        creationAt: "2023-01-03T21:20:03.000Z",
+        updatedAt: "2023-01-03T21:20:03.000Z",
+      },
+    };
+    await store.dispatch(addProductAndImage({imageArray, product}))
   })
 
   test("Should fetch for the final time", async () => {
     await store.dispatch(fetchAllProducts());
-    console.log(store.getState().productReducer);
+    console.log("Final product", store.getState().productReducer)
+    expect(store.getState().productReducer.length).toBe(4);
   });
 });

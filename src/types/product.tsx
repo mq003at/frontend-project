@@ -1,6 +1,6 @@
 import { Product } from "./common";
 
-export interface UpdatedProduct {
+export interface UP {
     id: number,
     update: Partial<Product>
 }
