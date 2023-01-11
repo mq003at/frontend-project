@@ -22,7 +22,7 @@ const AdminSettings: React.FC = (props) => {
                 <p>Product name:</p>
                 <input id="name" name="name" type="text" value={uploadProductForm.values.name} onChange={uploadProductForm.handleChange} />
                 <p>Image:</p>
-                <input id="image" name="image" type="file" onChange={uploadProductForm.handleChange} />
+                <input id="image" name="image" type="file" onChange={uploadProductForm.handleChange} multiple/>
                 <button type="submit">Submit</button>
             </form>
         </div>

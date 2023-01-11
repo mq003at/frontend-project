@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AddProductWithImageParams, Product, ResponseImage } from "../../types/common";
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { UpdatedProduct } from "../../types/common";
 import axiosInstance from "../../test/shared/sharedInstance";
 
@@ -62,7 +62,10 @@ export const addProductAndImage = createAsyncThunk("addProductAndImage", async (
     }
     
   } catch (e) {
-    console.log("uploadimgerr", e);
+    const error = e as AxiosError
+    if (error.request) console.log("addproductwimage-err-request", error.request.data)
+    else if (error.response) console.log("addproductwimage-err-response", error.response.data)
+    else console.log("addproductwimage-err-config", error.config)
   }
 });
 
@@ -103,6 +106,7 @@ const productSlice = createSlice({
     // Sort global product based on price
     sortAllByPrice: (state, action: PayloadAction<"asc" | "des">) => {
       if (action.payload === "asc") state.sort((a, b) => (a.price > b.price ? 1 : -1));
+      else state.sort((a, b) => (a.price > b.price ? -1 : 1));
     },
   },
   extraReducers: (build) => {

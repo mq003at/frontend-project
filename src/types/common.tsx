@@ -1,7 +1,7 @@
 export interface Common {
     id: number,
-    creationAt: string,
-    updatedAt: string
+    creationAt?: string,
+    updatedAt?: string
 }
 
 export interface Category extends Common {
@@ -17,6 +17,11 @@ export interface Product extends Common {
     category: Category
 }
 
+export interface Cart {
+    product: Product
+    quantity: number
+}
+
 export interface ResponseImage {
     originalname: string,
     filename: string,
@@ -28,7 +33,17 @@ export interface UpdatedProduct {
     update: Partial<Product>
 }
 
+export interface UpdatedCategory {
+    id: number,
+    update: Partial<Category>
+}
+
 export interface AddProductWithImageParams {
     imageArray: File[],
     product: Product
+}
+
+export interface AddCategoryWithImageParams {
+    image: File,
+    category: Category
 }

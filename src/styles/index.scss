@@ -1,0 +1,147 @@
+.App {
+  justify-content: center;
+  text-align: center;
+  font-weight: bold;
+}
+
+.navBar-functionrow {
+  text-align: -webkit-center;
+}
+
+.frontpage,
+.products-page,
+.product-details {
+  margin-top: 5em;
+}
+
+.banner {
+  padding: 4px !important;
+}
+
+.slick-list {
+  text-align: -webkit-center;
+}
+
+.slick-slide {
+}
+
+.front {
+  &-imgwrapper img {
+    width: 55%;
+    height: 55%;
+  }
+
+  &-specialOffers {
+    margin-top: 5em;
+  }
+}
+
+.product-f-details-imgwrapper img {
+  width: 90%;
+  height: 90%;
+}
+
+.productimg.true {
+  position: relative;
+}
+
+.productimg-wrapper {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.productimg {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+.saleIcon {
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+
+.product-card {
+  padding: 0.5em;
+  margin: 0.5em;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.products-page {
+  margin-left: 5%;
+  margin-right: 5%;
+
+  &.intro {
+    text-align: left;
+    padding-bottom: 1em;
+  }
+}
+
+.product-f-details {
+  &.buyout-container {
+    display: flex;
+  }
+  &.show-cat {
+    margin-left: 0.5em;
+  }
+  &.mainInfo p {
+    line-height: 1.5em !important;
+    font-size: 1.5em !important;
+  }
+  &.shopIcon span{
+    :hover,
+    :active {
+      background-color: none;
+    }
+  }
+  &.wrapper {
+    font-weight: bold !important;
+    margin-top: 10em;
+    margin-left: 5%;
+    margin-right: 5%;
+
+    & .incBox {
+      display: flex;
+      align-items: flex-start;
+      text-align: left !important;
+      border-radius: 10px;
+      border: 2px solid #bf0000;
+      min-width: 0;
+      max-width: 100%;
+      flex-wrap: wrap;
+      width: fit-content;
+
+      & button {
+        font-size: 1.5em;
+        padding: 0;
+        border: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: none;
+        color: #bf0000;
+      }
+    }
+  }
+
+  &.incInput {
+    border: none;
+    padding: 0;
+
+    & input {
+      font-size: 1.8em;
+      text-align: center;
+      padding: 0;
+      width: 4em;
+    }
+
+    & .MuiOutlinedInput-notchedOutline {
+      display: none;
+    }
+  }
+}

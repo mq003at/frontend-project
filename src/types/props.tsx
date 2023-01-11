@@ -1,3 +1,5 @@
+import { Product } from "./common"
+
 export interface ProductProps {
     
 }
@@ -13,5 +15,12 @@ export interface ProductProps {
 
 export interface uploadProductForm {
     name: string,
-    image: File | null
+    image: FileList | null
+}
+
+export interface ProductPlacementProps {
+    size: number
+    product: Product
+    isOnSale?: boolean
+    isHideDescription: boolean
 }
