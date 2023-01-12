@@ -22,9 +22,6 @@
   text-align: -webkit-center;
 }
 
-.slick-slide {
-}
-
 .front {
   &-imgwrapper img {
     width: 55%;
@@ -93,7 +90,7 @@
     line-height: 1.5em !important;
     font-size: 1.5em !important;
   }
-  &.shopIcon span{
+  &.shopIcon span {
     :hover,
     :active {
       background-color: none;
@@ -142,6 +139,38 @@
 
     & .MuiOutlinedInput-notchedOutline {
       display: none;
+    }
+  }
+}
+
+.logUser {
+  &__wrapper {
+    background-image: url("../../assets/background.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  &__content {
+    margin: 25% 10% 0 10%;
+  }
+
+  &__card {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  &__grid {
+    & .MuiFormControl-root {
+      display: grid !important;
+      margin: 10% 10% 5% 10%;
     }
   }
 }

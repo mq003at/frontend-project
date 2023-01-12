@@ -8,6 +8,7 @@ import FrontPage from "./components/FrontPage/FrontPage";
 import Header from "./components/Header/Header";
 import ProductDetail from "./components/Products/ProductDetails";
 import ProductsList from "./components/Products/ProductsList";
+import LogUser from "./components/Profile/LogUser";
 import Profile from "./components/Profile/Profile";
 import { useAppDispatch, useAppSelector } from "./hooks/reduxHook";
 import { fetchAllCategories } from "./redux/reducers/categoryReducer";
@@ -19,6 +20,7 @@ import "./styles/css/index.css";
 
 const App = () => {
   const products = useAppSelector((state) => state.productReducer);
+  const user = useAppSelector(state => state.userReducer)
   const dispatch = useAppDispatch();
 
   // Get all products and categories available from the first page load
@@ -45,7 +47,7 @@ const App = () => {
           <Route path="/products/:category" element={<ProductsList />} />
           <Route path="/products/:category/:id" element={<ProductDetail />} />
           <Route path="/carts" element={<Cart />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={user.currentUser ? <Profile currentUser={user.currentUser} /> : <LogUser/>} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

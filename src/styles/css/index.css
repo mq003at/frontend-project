@@ -129,4 +129,29 @@
   display: none;
 }
 
+.logUser__wrapper {
+  background-image: url("../../assets/background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+}
+.logUser__content {
+  margin: 25% 10% 0 10%;
+}
+.logUser__card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+}
+.logUser__grid .MuiFormControl-root {
+  display: grid !important;
+  margin: 10% 10% 5% 10%;
+}
+
 /*# sourceMappingURL=index.css.map */

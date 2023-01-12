@@ -1,4 +1,5 @@
 import { Product } from "./common"
+import { User } from "./user"
 
 export interface ProductProps {
     
@@ -23,4 +24,8 @@ export interface ProductPlacementProps {
     product: Product
     isOnSale?: boolean
     isHideDescription: boolean
+}
+
+export interface ProfileProps {
+    currentUser: User;
 }

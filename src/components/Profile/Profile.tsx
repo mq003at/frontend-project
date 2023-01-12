@@ -1,11 +1,13 @@
+import { ProfileProps } from "../../types/props"
 import ProductCard from "../Basic/ProductCard"
 
-const Profile: React.FC = () => {
+const Profile: React.FC<ProfileProps> = (props) => {
+    const {currentUser} = props
+    
     return(
-        <>
-            <ProductCard id={2} />
-            <ProductCard type="circular" id={3} />
-        </>
+        <div className="profile">
+            
+        </div>
     )
 }
 

@@ -16,6 +16,8 @@ export interface UserReducer{
     currentUser?: User
     session?: SessionCredential
     specialOffers?: Product[]
+    isAvailable?: boolean
+    registerSuccess?: boolean
 }
 
 export interface AccountCredential {

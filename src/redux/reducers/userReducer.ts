@@ -14,6 +14,21 @@ export const fetchAllUsers = createAsyncThunk("fetchAllUsers", async () => {
   }
 });
 
+// Sign up a user 
+export const addUser = createAsyncThunk("addUser", async (user: User) => {
+  try {
+    const res: AxiosResponse<User | Error, any> = await axiosInstance.post("users", {
+      name: user.name,
+      email: user.email,
+      password: user.password,
+      avatar: user.avatar
+    });
+    if (!(res.data instanceof Error)) return res.data;
+  } catch (e) {
+    return;
+  }
+});
+
 // User Auth
 export const authCredential = createAsyncThunk("authCredential", async (account: AccountCredential) => {
   try {
@@ -40,6 +55,20 @@ export const loginUser = createAsyncThunk("loginUser", async (access_token: stri
   }
 });
 
+// Validate emails
+export const validateEmail = createAsyncThunk("validateUser", async (email: string) => {
+  try {
+    const res: AxiosResponse<{isAvailable: boolean} | Error, any> = await axiosInstance.post("/users/is-available", {
+      email: email
+    })
+    console.log("response", res.data, email)
+    if(!(res.data instanceof Error)) return res.data
+  } catch (e) {
+    const error = e as AxiosError;
+    return error;
+  }
+})
+
 const userSlice = createSlice({
   name: "userSlice",
   initialState: { userList: [], specialOffers: undefined } as UserReducer,
@@ -59,6 +88,12 @@ const userSlice = createSlice({
       }
       return state;
     },
+    clearEmailCheck: (state) => {
+      if (state.isAvailable !== undefined) {
+        delete state.isAvailable
+        console.log("state", state)
+      }
+    }
   },
   extraReducers: (build) => {
     build
@@ -70,6 +105,13 @@ const userSlice = createSlice({
         }
       })
 
+      .addCase(addUser.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError || !action.payload) return state;
+        else {
+          return { ...state, currentUser: action.payload };
+        }
+      })
+
       .addCase(authCredential.fulfilled, (state, action) => {
         if (action.payload instanceof AxiosError || !action.payload || !state) return state;
         else return { ...state, session: action.payload };
@@ -78,9 +120,14 @@ const userSlice = createSlice({
       .addCase(loginUser.fulfilled, (state, action) => {
         if (action.payload instanceof AxiosError || !action.payload || !state) return state;
         else return { ...state, currentUser: action.payload };
-      });
+      })
+
+      .addCase(validateEmail.fulfilled, (state, action) => {
+        if (action.payload instanceof AxiosError || !action.payload || !state) return state;
+        else return { ...state, ...action.payload };
+      })
   },
 });
 
 export const userReducer = userSlice.reducer;
-export const { makeSpecialOffersForUser } = userSlice.actions;
+export const { makeSpecialOffersForUser, clearEmailCheck } = userSlice.actions;
