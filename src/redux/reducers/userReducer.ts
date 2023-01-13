@@ -29,7 +29,7 @@ export const addUser = createAsyncThunk("addUser", async (user: User) => {
   }
 });
 
-// User Auth
+// User Auth - API not working atm
 export const authCredential = createAsyncThunk("authCredential", async (account: AccountCredential) => {
   try {
     const res: AxiosResponse<SessionCredential | Error, any> = await axiosInstance.post("auth/login", account);

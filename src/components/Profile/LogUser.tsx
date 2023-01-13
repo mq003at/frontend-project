@@ -14,38 +14,26 @@ import { Form, useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
 import * as Yup from 'yup';
-import { addUser, clearEmailCheck, validateEmail } from '../../redux/reducers/userReducer';
+import { addUser, authCredential, clearEmailCheck, loginUser, validateEmail } from '../../redux/reducers/userReducer';
+import { useNavigate } from 'react-router-dom';
 
 const LogUser: React.FC = (props) => {
   const user = useAppSelector((state) => state.userReducer);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const [isCheck, setCheck] = useState(true);
   const [isEmailAvailable, setEmailAvailable] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    if (user.isAvailable !== undefined) {
-      setEmailAvailable(user.isAvailable);
-      console.log('USER', user.isAvailable);
-    }
-  }, [user.isAvailable]);
 
   useEffect(() => {
     if (user) console.log("sneak", user)
   }, [user])
 
   useEffect(() => {
-    if (isEmailAvailable) {
-        dispatch(addUser({
-            id: 1,
-            role: "customer",
-            avatar: "https://ui-avatars.com/api/?name=John+Doe",
-            email: logUserForm.values.email,
-            password: logUserForm.values.password,
-            name: ""
-        }))
-    }
-  }, [isEmailAvailable])
+    if (user.currentUser) navigate("/profile")
+  }, [user.currentUser, navigate])
+
 
   const validationSchema = Yup.object().shape({
     email: Yup.string().email().required('Email is required'),
@@ -53,6 +41,7 @@ const LogUser: React.FC = (props) => {
       .min(6, 'Password should be at least 6 characters')
       .required('Password is Required'),
   });
+  
 
   const logUserForm = useFormik({
     initialValues: {
@@ -60,13 +49,23 @@ const LogUser: React.FC = (props) => {
       password: '',
     },
     onSubmit: (values) => {
-      console.log('Reach');
       if (isCheck) {
-        dispatch(clearEmailCheck);
-        setEmailAvailable(null);
-        dispatch(validateEmail(values.email));
-        console.log('Available', user.isAvailable);
+        // Register user if checkbox is ticked
+        dispatch(addUser({
+          name: "User",
+          email: values.email,
+          password: values.password,
+          role: "customer",
+          id: 0,
+          avatar: ""
+        }))
+
       } else {
+        // Or, log in the user by getting their token info then use it to get the profile. After getting profile -> useEffect will navigate
+        dispatch(authCredential({
+          email: values.email,
+          password: values.password
+        }))
       }
     },
     validationSchema,
