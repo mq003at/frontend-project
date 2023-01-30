@@ -1,76 +1,82 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AddProductWithImageParams, Product, ResponseImage } from "../../types/common";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { UpdatedProduct } from "../../types/common";
-import axiosInstance from "../../test/shared/sharedInstance";
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { AddProductWithImageParams, Product, ProductAdd, ResponseImage } from '../../types/common';
+import axios, { AxiosError, AxiosResponse } from 'axios';
+import { UpdatedProduct } from '../../types/common';
+import axiosInstance from '../../test/shared/sharedInstance';
+// Backup when FAkeAPI changes
+import product from '../../assets/products.json';
 
 // Fetch all products from API; in case the fetch fails, use the backup one stored locally
-export const fetchAllProducts = createAsyncThunk("fetchAllProducts", async () => {
+export const fetchAllProducts = createAsyncThunk('fetchAllProducts', async () => {
   try {
-    const res: AxiosResponse<Product[] | Error, any> = await axiosInstance.get("products");
-    return { data: res.data, status: res.request.status };
+    const res: AxiosResponse<Product[] | Error, any> = await axiosInstance.get('products');
+    // const fetchRes = await fetch("/assets/products.json"); //Backup when fakeapi's data changes
+    // const res = await fetchRes.json();
+    // return { data: res.data, status: res.request.status };
+    return { data: product, status: 200 };
   } catch (e: any) {
     throw new Error(e.message);
   }
 });
 
-export const addProductToServer = createAsyncThunk("addProductToServer", async (product: Product) => {
+export const addProductToServer = createAsyncThunk('addProductToServer', async (product: ProductAdd) => {
   try {
-    const res: AxiosResponse<Product | Error, any> = await axiosInstance.post("products", product);
+    console.log("product", product)
+    const res: AxiosResponse<Product | Error, any> = await axiosInstance.post('products', product);
     return res.data;
   } catch (e) {
-    console.log("adderr", e);
+    console.log('adderr', e);
   }
 });
 
 // Take in an updated Product, generate metadata and update it on the server
-export const modifyProduct = createAsyncThunk("modifyProduct", async ({ id, update }: UpdatedProduct) => {
+export const modifyProduct = createAsyncThunk('modifyProduct', async ({ id, update }: UpdatedProduct) => {
   try {
     const res: AxiosResponse<Product | Error, any> = await axiosInstance.put(`/products/${id}`, update);
     return res.data;
   } catch (e) {
-    console.log("upderr", e);
+    console.log('upderr', e);
   }
 });
 
-export const deleteProduct = createAsyncThunk("deleteProduct", async (id: number) => {
+export const deleteProduct = createAsyncThunk('deleteProduct', async (id: number) => {
   try {
     const res: AxiosResponse<string | Error, any> = await axiosInstance.delete(`/products/${id}`);
     return { id: id, status: res.status, message: res.data };
   } catch (e) {
-    console.log("delerr", e);
+    console.log('delerr', e);
   }
 });
 
 // Accept an array images and push them into the API.
-export const addProductAndImage = createAsyncThunk("addProductAndImage", async ({ imageArray, product }: AddProductWithImageParams) => {
+export const addProductAndImage = createAsyncThunk('addProductAndImage', async ({ imageArray, product }: AddProductWithImageParams) => {
   try {
     const images: string[] = [];
-    for(const img of imageArray) {
-      const response: AxiosResponse<ResponseImage | Error, any> = await axiosInstance.post("/files/upload", img)
-      if (!(response.data instanceof Error) && response.data.location) images.push(response.data.location)
-    };
+    for (const img of imageArray) {
+      const response: AxiosResponse<ResponseImage | Error, any> = await axiosInstance.post('/files/upload', img);
+      if (!(response.data instanceof Error) && response.data.location) images.push(response.data.location);
+    }
 
     // Does it need to be 3?
-    if (images.length <= 0) {console.log ("images", images)} 
-    else {
-      const res2: AxiosResponse<Product | Error, any> = await axiosInstance.post("products", {
+    if (images.length <= 0) {
+      console.log('images', images);
+    } else {
+      const res2: AxiosResponse<Product | Error, any> = await axiosInstance.post('products', {
         ...product,
-        images: images
+        images: images,
       });
-      return res2.data
+      return res2.data;
     }
-    
   } catch (e) {
-    const error = e as AxiosError
-    if (error.request) console.log("addproductwimage-err-request", error.request.data)
-    else if (error.response) console.log("addproductwimage-err-response", error.response.data)
-    else console.log("addproductwimage-err-config", error.config)
+    const error = e as AxiosError;
+    if (error.request) console.log('addproductwimage-err-request', error.request.data);
+    else if (error.response) console.log('addproductwimage-err-response', error.response.data);
+    else console.log('addproductwimage-err-config', error.config);
   }
 });
 
 const productSlice = createSlice({
-  name: "productSlice",
+  name: 'productSlice',
   initialState: [] as Product[],
   reducers: {
     addAll: (state, action) => {
@@ -83,8 +89,8 @@ const productSlice = createSlice({
     },
 
     // Sort global product based on category
-    sortAllByCategory: (state, action: PayloadAction<"asc" | "des">) => {
-      if (action.payload === "asc") {
+    sortAllByCategory: (state, action: PayloadAction<'asc' | 'des'>) => {
+      if (action.payload === 'asc') {
         state.sort((a, b) => {
           if (a.category.name.toLowerCase() > b.category.name.toLowerCase()) return 1;
           if (a.category.name.toLowerCase() < b.category.name.toLowerCase()) return -1;
@@ -104,8 +110,8 @@ const productSlice = createSlice({
     },
 
     // Sort global product based on price
-    sortAllByPrice: (state, action: PayloadAction<"asc" | "des">) => {
-      if (action.payload === "asc") state.sort((a, b) => (a.price > b.price ? 1 : -1));
+    sortAllByPrice: (state, action: PayloadAction<'asc' | 'des'>) => {
+      if (action.payload === 'asc') state.sort((a, b) => (a.price > b.price ? 1 : -1));
       else state.sort((a, b) => (a.price > b.price ? -1 : 1));
     },
   },
@@ -118,12 +124,12 @@ const productSlice = createSlice({
       })
 
       .addCase(fetchAllProducts.pending, (state, action) => {
-        console.log("Now loading...");
+        console.log('Now loading...');
         return state;
       })
 
       .addCase(fetchAllProducts.rejected, (state, action) => {
-        console.log("Error fetching data");
+        console.log('Error fetching data');
         return state;
       })
 
@@ -133,7 +139,7 @@ const productSlice = createSlice({
       })
 
       .addCase(modifyProduct.fulfilled, (state, action) => {
-        console.log("Modify Product starts");
+        console.log('Modify Product starts');
         return state.map((product: Product) => {
           if (!(action.payload instanceof Error) && product.id === action.payload?.id) return action.payload;
           return product;
@@ -145,14 +151,14 @@ const productSlice = createSlice({
           const { id, status, message } = action.payload;
           if (status === 200) return state.filter((product: Product) => product.id !== id);
           else return state;
-        } 
+        }
       })
 
       // Testing using spread operator
       .addCase(addProductAndImage.fulfilled, (state, action) => {
-        if (action.payload) return action.payload
-        else return state
-      })
+        if (action.payload) return action.payload;
+        else return state;
+      });
   },
 });
 

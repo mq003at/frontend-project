@@ -31,7 +31,7 @@ const App = () => {
 
   useEffect(() => {
     if (products.length > 0) {
-      console.log(products);
+      console.log("products", products);
       dispatch(makeSpecialOffersForUser(products));
     }
   }, [dispatch, products]);
@@ -47,7 +47,8 @@ const App = () => {
           <Route path="/products/:category" element={<ProductsList />} />
           <Route path="/products/:category/:id" element={<ProductDetail />} />
           <Route path="/carts" element={<Cart />} />
-          <Route path="/profile" element={user.currentUser ? <Profile currentUser={user.currentUser} /> : <LogUser/>} />
+          <Route path="/login" element={<LogUser/>}/>
+          <Route path="/profile" element={<Profile/>} />
           <Route path="*" element={<Error />} />
         </Routes>
       </BrowserRouter>

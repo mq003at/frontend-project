@@ -1,14 +1,11 @@
 import { useState, useEffect } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
-import { store } from "../../redux/store";
+import { useAppSelector } from "../../hooks/reduxHook";
 import { Product } from "../../types/common";
-import ProductCard from "../Basic/ProductCard";
 import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SpecialOffers from "./SpecialOffers";
-import SaleIcon from "../Basic/SaleIcon";
 
 // Testing splitting up components into many small components
 const FrontPage: React.FC = () => {

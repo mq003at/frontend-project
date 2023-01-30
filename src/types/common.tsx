@@ -1,5 +1,5 @@
 export interface Common {
-    id: number,
+    id?: number,
     creationAt?: string,
     updatedAt?: string
 }
@@ -15,6 +15,14 @@ export interface Product extends Common {
     description: string
     images: string[]
     category: Category
+}
+
+export interface ProductAdd extends Common {
+    title: string,
+    price: number,
+    description: string
+    images: string[]
+    categoryId: number
 }
 
 export interface Cart {

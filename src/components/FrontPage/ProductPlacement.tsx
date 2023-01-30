@@ -15,7 +15,7 @@ const ProductPlacement: React.FC<ProductPlacementProps> = (props) => {
   return (
     <Card sx={{ maxWidth: newSize[0] }} className="product-card" onClick={handleClick}>
       <div className="productimg-wrapper">
-        <CardMedia className={"productimg " + isOnSale} component="img" height={newSize[1] + "%"} width={newSize[1] + "%"} image={product.images[1]} alt={product.title} />
+        <CardMedia className={"productimg " + isOnSale} component="img" height={newSize[1] + "%"} width={newSize[1] + "%"} image={product.images[0]} alt={product.title} />
         {isOnSale && <SaleIcon size={25} />}
       </div>
       <CardContent>

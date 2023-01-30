@@ -36,7 +36,7 @@ const ProductsList: React.FC = () => {
       if (a === undefined) navigate("/error");
       else {
         tempArr = products.filter((product: Product) => product.category.name === a.name);
-        setChosenCat(a.id);
+        if (a.id) setChosenCat(a.id);
       }
     } else if (products.length > 0) tempArr = products.map((x: any) => x);
 
