@@ -116,8 +116,7 @@ const productSlice = createSlice({
   extraReducers: (build) => {
     build
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
-        const data = action.payload.data;
-        if (data && action.payload.status === 200) return data;
+        if (action.payload && action.payload.data && action.payload.status === 200) return action.payload.data;
         else return state;
       })
 
@@ -136,17 +135,22 @@ const productSlice = createSlice({
       })
 
       .addCase(modifyProduct.fulfilled, (state, action) => {
-        return state.map((product: Product) => {
-          if (!(action.payload instanceof Error) && product.id === action.payload?.id) return action.payload;
-          return product;
-        });
+        if (action.payload) {
+          return state.map((product: Product) => {
+            if (!(action.payload instanceof Error) && product.id === action.payload?.id) return action.payload;
+            return product;
+          });
+        }
       })
 
       .addCase(deleteProduct.fulfilled, (state, action) => {
-        if (action.payload) {
+        // We can use hasOwnProperty to check for the property
+        if (action.payload && action.payload.hasOwnProperty('id') && action.payload.hasOwnProperty('status')) {
           const { id, status, message } = action.payload;
           if (status === 200) return state.filter((product: Product) => product.id !== id);
           else return state;
+        } else {
+          return state;
         }
       })
 

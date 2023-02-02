@@ -230,9 +230,8 @@ var productSlice = toolkit_1.createSlice({
     extraReducers: function (build) {
         build
             .addCase(exports.fetchAllProducts.fulfilled, function (state, action) {
-            var data = action.payload.data;
-            if (data && action.payload.status === 200)
-                return data;
+            if (action.payload && action.payload.data && action.payload.status === 200)
+                return action.payload.data;
             else
                 return state;
         })
@@ -250,20 +249,26 @@ var productSlice = toolkit_1.createSlice({
                 return state;
         })
             .addCase(exports.modifyProduct.fulfilled, function (state, action) {
-            return state.map(function (product) {
-                var _a;
-                if (!(action.payload instanceof Error) && product.id === ((_a = action.payload) === null || _a === void 0 ? void 0 : _a.id))
-                    return action.payload;
-                return product;
-            });
+            if (action.payload) {
+                return state.map(function (product) {
+                    var _a;
+                    if (!(action.payload instanceof Error) && product.id === ((_a = action.payload) === null || _a === void 0 ? void 0 : _a.id))
+                        return action.payload;
+                    return product;
+                });
+            }
         })
             .addCase(exports.deleteProduct.fulfilled, function (state, action) {
-            if (action.payload) {
+            // We can use hasOwnProperty to check for the property
+            if (action.payload && action.payload.hasOwnProperty('id') && action.payload.hasOwnProperty('status')) {
                 var _a = action.payload, id_1 = _a.id, status = _a.status, message = _a.message;
                 if (status === 200)
                     return state.filter(function (product) { return product.id !== id_1; });
                 else
                     return state;
+            }
+            else {
+                return state;
             }
         })
             // Testing using spread operator
