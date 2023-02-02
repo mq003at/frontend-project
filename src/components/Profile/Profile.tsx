@@ -72,7 +72,6 @@ const Profile: React.FC = () => {
         categoryId: Number(values.productCategory) + 1,
         images: values.productImages,
       };
-      console.log('new', newProduct);
       dispatch(addProductToServer(newProduct));
     },
     validationSchema: addProductSchema,

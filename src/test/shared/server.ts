@@ -196,7 +196,6 @@ const handler = [
 
   // LOGIN
   rest.get(`https://api.escuelajs.co/api/v1/auth/profile`, async (req, res, ctx) => {
-    console.log("arr", req.headers.get("Authorization")?.split(" "));
     const access_token_arr = await req.headers.get("Authorization")?.split(" ");
     if (!access_token_arr) return res(ctx.status(401, "Unauthorized"));
     else {

@@ -42,7 +42,6 @@ const ProductsList: React.FC = () => {
 
     if (tempArr.length > 0) {
       if (isAsc) {
-        console.log(tempArr);
         tempArr.sort((a, b) => (a.price > b.price ? 1 : -1));
         setMinMaxPrice([tempArr[0].price, tempArr[tempArr.length - 1].price]);
       } else {
@@ -55,7 +54,6 @@ const ProductsList: React.FC = () => {
 
   useEffect(() => {
     if (categoryList.length > 0 && products.length > 0 && chosenCat !== -1) {
-      console.log(products, chosenCat, "current");
       setCurrentProducts(products.filter((product: Product) => product.category.id === chosenCat + 1));
     }
   }, [categoryList, chosenCat, products]);
@@ -79,10 +77,6 @@ const ProductsList: React.FC = () => {
   };
 
   const handlePageChange = (event: any, pageNumber: number) => setCurrentPage(pageNumber);
-
-  useEffect(() => {
-    console.log("mm", minMaxPrice);
-  }, [minMaxPrice]);
 
   return (
     <div className="products-page">

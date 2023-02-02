@@ -15,13 +15,9 @@ const LogUser: React.FC = (props) => {
   const [isRememberMe, setIsRemember] = useState(false);
   // const [isEmailAvailable, setEmailAvailable] = useState<boolean | null>(null);
 
-  useEffect(() => {
-    if (user) console.log('sneak', user);
-  }, [user]);
 
   useEffect(() => {
     if (user.currentUser) {
-      console.log("current", user.currentUser);
       navigate("/profile");
     }
   }, [user.currentUser, navigate]);

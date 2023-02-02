@@ -9,11 +9,7 @@ import CardFullDetails from './CartFullDetails';
 const Cart: React.FC = () => {
     const cart = useAppSelector((store) => store.cartReducer);
 
-  useEffect(() => {
-    console.log('cart', cart);
-  }, [cart]);
-
-  return (
+    return (
     <Box className="cart__wrapper">
       {cart.type === undefined && cart.cart.length === 0 && <Typography>Nothing in here</Typography>}
       {cart.type === 'search' && (

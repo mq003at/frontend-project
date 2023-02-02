@@ -29,7 +29,6 @@ const App = () => {
 
   useEffect(() => {
     if (products.length > 0) {
-      console.log("products", products);
       dispatch(makeSpecialOffersForUser(products));
     }
   }, [dispatch, products]);

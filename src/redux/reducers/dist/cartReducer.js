@@ -43,7 +43,6 @@ var cartSlice = toolkit_1.createSlice({
         },
         // Return the search product
         extraCart: function (state, action) {
-            console.log('reach', action.payload);
             return __assign(__assign({}, state), { cartSearchResult: action.payload });
         },
         // Switch functionality

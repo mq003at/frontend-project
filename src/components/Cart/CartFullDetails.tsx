@@ -33,11 +33,7 @@ const CardFullDetails: React.FC<{ catName: string; cartProduct: CartProduct }> =
     function handleButton() {
       dispatch(updateCart({product: cartProduct.product, quantity: value}));
     }
-  
-    useEffect(() => {
-      console.log("cart", cart)
-    }, [cart])
-  
+
     return (
       <Card className="product-f-details wrapper">
         <Box className="product-f-details show-cat" textAlign={"left"}>

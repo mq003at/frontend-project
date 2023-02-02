@@ -16,7 +16,6 @@ export const fetchAllUsers = createAsyncThunk("fetchAllUsers", async () => {
 
 // Sign up a user + testing params. Should work like props
 export const addUser = createAsyncThunk("addUser", async (params: {user: User, isRememberMe: boolean}) => {
-  console.log("user", params.user)
   try {
     const res: AxiosResponse<User | Error, any> = await axiosInstance.post("users", {
       name: params.user.name,
@@ -39,13 +38,13 @@ export const authCredential = createAsyncThunk("authCredential", async (params: 
     const res: AxiosResponse<SessionCredential | Error, any> = await axiosInstance.post("auth/login", params.account);
     if (!(res.data instanceof Error)) {
       const sessionData = res.data;
-      console.log("sessionData", sessionData);
       dispatch(loginUser({access_token: sessionData.access_token, isRememberMe: params.isRememberMe}));
       return sessionData;
     }
   } catch (e) {
     const error = e as AxiosError;
     if (error.response && error.response.status === 401) {
+      // Server return that email or password is wrong
       console.log("Incorrect login email or password.")
     } else return error;
   }
@@ -72,14 +71,12 @@ export const loginUser = createAsyncThunk("loginUser", async (params: {access_to
 // Update User
 export const updateUser = createAsyncThunk("updateUser", async (user: User) => {
   try {
-    console.log("update start", user)
     const res: AxiosResponse<User | Error, any> = await axiosInstance.put(`users/${user.id}`, {
       name: user.name,
       email: user.email,
       password: user.password,
     });
     if (!(res.data instanceof Error)) {
-      console.log("update", res.data);
     }
   } catch (e) {
     const error = e as AxiosError;
@@ -93,7 +90,6 @@ export const validateEmail = createAsyncThunk("validateUser", async (email: stri
     const res: AxiosResponse<{isAvailable: boolean} | Error, any> = await axiosInstance.post("/users/is-available", {
       email: email
     })
-    console.log("response", res.data, email)
     if(!(res.data instanceof Error)) return res.data
   } catch (e) {
     const error = e as AxiosError;
@@ -116,7 +112,6 @@ const userSlice = createSlice({
           randomIndex.push(rI);
         }
         randomIndex.forEach((index) => tempArray.push(allProducts[index]));
-        console.log("TempArray", tempArray);
         return {...state, specialOffers: tempArray}
       }
       return state;
@@ -129,7 +124,6 @@ const userSlice = createSlice({
     logOutCurrentUser:(state) => {
       if (state.currentUser !== undefined) {
         delete state.currentUser;
-        console.log("state", state);
       }
     }
 
@@ -137,7 +131,6 @@ const userSlice = createSlice({
   extraReducers: (build) => {
     build
       .addCase(fetchAllUsers.fulfilled, (state, action) => {
-        console.log("fetch-all-user");
         if (action.payload instanceof AxiosError || !action.payload) return state;
         else {
           return { ...state, userList: action.payload };

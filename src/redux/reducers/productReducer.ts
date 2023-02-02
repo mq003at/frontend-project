@@ -21,9 +21,7 @@ export const fetchAllProducts = createAsyncThunk('fetchAllProducts', async () =>
 
 export const addProductToServer = createAsyncThunk('addProductToServer', async (product: ProductAdd) => {
   try {
-    console.log("product", product)
     const res: AxiosResponse<Product | Error, any> = await axiosInstance.post('products', product);
-    console.log("add", res.data);
     return res.data;
   } catch (e) {
     console.log('adderr', e);
@@ -60,7 +58,6 @@ export const addProductAndImage = createAsyncThunk('addProductAndImage', async (
 
     // Does it need to be 3?
     if (images.length <= 0) {
-      console.log('images', images);
     } else {
       const res2: AxiosResponse<Product | Error, any> = await axiosInstance.post('products', {
         ...product,
@@ -130,7 +127,6 @@ const productSlice = createSlice({
       })
 
       .addCase(fetchAllProducts.rejected, (state, action) => {
-        console.log('Error fetching data');
         return state;
       })
 
@@ -140,7 +136,6 @@ const productSlice = createSlice({
       })
 
       .addCase(modifyProduct.fulfilled, (state, action) => {
-        console.log('Modify Product starts');
         return state.map((product: Product) => {
           if (!(action.payload instanceof Error) && product.id === action.payload?.id) return action.payload;
           return product;

@@ -80,11 +80,9 @@ exports.addProductToServer = toolkit_1.createAsyncThunk('addProductToServer', fu
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                console.log("product", product);
                 return [4 /*yield*/, sharedInstance_1["default"].post('products', product)];
             case 1:
                 res = _a.sent();
-                console.log("add", res.data);
                 return [2 /*return*/, res.data];
             case 2:
                 e_2 = _a.sent();
@@ -160,7 +158,6 @@ exports.addProductAndImage = toolkit_1.createAsyncThunk('addProductAndImage', fu
                     return [3 /*break*/, 1];
                 case 4:
                     if (!(images.length <= 0)) return [3 /*break*/, 5];
-                    console.log('images', images);
                     return [3 /*break*/, 7];
                 case 5: return [4 /*yield*/, sharedInstance_1["default"].post('products', __assign(__assign({}, product), { images: images }))];
                 case 6:
@@ -244,7 +241,6 @@ var productSlice = toolkit_1.createSlice({
             return state;
         })
             .addCase(exports.fetchAllProducts.rejected, function (state, action) {
-            console.log('Error fetching data');
             return state;
         })
             .addCase(exports.addProductToServer.fulfilled, function (state, action) {
@@ -254,7 +250,6 @@ var productSlice = toolkit_1.createSlice({
                 return state;
         })
             .addCase(exports.modifyProduct.fulfilled, function (state, action) {
-            console.log('Modify Product starts');
             return state.map(function (product) {
                 var _a;
                 if (!(action.payload instanceof Error) && product.id === ((_a = action.payload) === null || _a === void 0 ? void 0 : _a.id))

@@ -25,7 +25,6 @@ const cartSlice = createSlice({
 
     // Return the search product
     extraCart: (state, action) => {
-      console.log('reach', action.payload);
       return { ...state, cartSearchResult: action.payload };
     },
 

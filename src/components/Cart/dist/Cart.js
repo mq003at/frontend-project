@@ -8,9 +8,6 @@ var CartFullDetails_1 = require("./CartFullDetails");
 var Cart = function () {
     var _a;
     var cart = reduxHook_1.useAppSelector(function (store) { return store.cartReducer; });
-    react_1.useEffect(function () {
-        console.log('cart', cart);
-    }, [cart]);
     return (react_1["default"].createElement(material_1.Box, { className: "cart__wrapper" },
         cart.type === undefined && cart.cart.length === 0 && react_1["default"].createElement(material_1.Typography, null, "Nothing in here"),
         cart.type === 'search' && (react_1["default"].createElement(material_1.Box, { className: "cart__cardsWrapper" },

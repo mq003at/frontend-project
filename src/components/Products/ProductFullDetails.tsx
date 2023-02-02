@@ -38,10 +38,6 @@ const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (pro
     dispatch(updateCart({product: product, quantity: value}));
   }
 
-  useEffect(() => {
-    console.log("cart", cart)
-  }, [cart])
-
   return (
     <Card className="product-f-details wrapper">
       <Box className="product-f-details show-cat" textAlign={"left"}>

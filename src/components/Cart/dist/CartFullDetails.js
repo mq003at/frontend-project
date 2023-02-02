@@ -41,9 +41,6 @@ var CardFullDetails = function (props) {
     function handleButton() {
         dispatch(cartReducer_1.updateCart({ product: cartProduct.product, quantity: value }));
     }
-    react_1.useEffect(function () {
-        console.log("cart", cart);
-    }, [cart]);
     return (React.createElement(material_1.Card, { className: "product-f-details wrapper" },
         React.createElement(material_1.Box, { className: "product-f-details show-cat", textAlign: "left" },
             React.createElement(material_1.Typography, { marginLeft: "1.25em", padding: "0.5em 0.5em", color: "text.secondary" },

@@ -80,7 +80,6 @@ var Profile = function () {
                 categoryId: Number(values.productCategory) + 1,
                 images: values.productImages
             };
-            console.log('new', newProduct);
             dispatch(productReducer_1.addProductToServer(newProduct));
         },
         validationSchema: addProductSchema

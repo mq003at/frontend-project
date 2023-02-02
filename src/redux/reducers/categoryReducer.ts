@@ -63,19 +63,16 @@ const categorySlice = createSlice({
   extraReducers: (build) => {
     build
       .addCase(fetchAllCategories.fulfilled, (state, action) => {
-        console.log("Reducer category fetch fulfill initiates");
         if (action.payload instanceof AxiosError || !action.payload === undefined) return state;
         else return action.payload;
       })
 
       .addCase(addCategoryToServer.fulfilled, (state, action) => {
-        console.log("Add category");
         if (action.payload instanceof AxiosError || action.payload === undefined) return state;
         else return [...state, action.payload];
       })
 
       .addCase(updateCategory.fulfilled, (state, action) => {
-        console.log("Put category");
         if (!(action.payload instanceof AxiosError) && (action.payload !== undefined)) {
           const data: Category = action.payload;
           return state.map(cat => cat.id === data.id ? data : cat)
@@ -83,7 +80,6 @@ const categorySlice = createSlice({
       })
 
       .addCase(addCatAndImage.fulfilled, (state, action) => {
-        console.log("Cat and image");
         if (action.payload instanceof Error || action.payload === undefined) return state;
         else return [...state, action.payload];
       });

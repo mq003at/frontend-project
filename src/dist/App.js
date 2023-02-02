@@ -26,7 +26,6 @@ var App = function () {
     }, []);
     react_1.useEffect(function () {
         if (products.length > 0) {
-            console.log("products", products);
             dispatch(userReducer_1.makeSpecialOffersForUser(products));
         }
     }, [dispatch, products]);
