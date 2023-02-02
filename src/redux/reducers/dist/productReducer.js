@@ -192,6 +192,7 @@ exports.addProductAndImage = toolkit_1.createAsyncThunk('addProductAndImage', fu
         });
     });
 });
+// Product SLice
 var productSlice = toolkit_1.createSlice({
     name: 'productSlice',
     initialState: [],

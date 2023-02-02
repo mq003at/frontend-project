@@ -73,6 +73,7 @@ export const addProductAndImage = createAsyncThunk('addProductAndImage', async (
   }
 });
 
+// Product SLice
 const productSlice = createSlice({
   name: 'productSlice',
   initialState: [] as Product[],
