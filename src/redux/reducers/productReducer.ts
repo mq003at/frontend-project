@@ -135,17 +135,7 @@ const productSlice = createSlice({
         else return state;
       })
 
-      .addCase(modifyProduct.fulfilled, (state, action) => {
-        if (action.payload !== undefined && action.payload.id !== undefined) {
-          const mProduct = action.payload;
-          const newState = state.map((product: Product) => {
-            if (product.id === mProduct.id) return action.payload;
-            else return product;
-          });
-          return newState
-        } else return state;
-      })
-
+      
       .addCase(deleteProduct.fulfilled, (state, action) => {
         // We can use hasOwnProperty to check for the property
         if (action.payload !== undefined && action.payload.hasOwnProperty('id') && action.payload.hasOwnProperty('status')) {
