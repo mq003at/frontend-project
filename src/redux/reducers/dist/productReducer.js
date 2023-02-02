@@ -73,7 +73,9 @@ exports.fetchAllProducts = toolkit_1.createAsyncThunk('fetchAllProducts', functi
                 // const fetchRes = await fetch("/assets/products.json"); //Backup when fakeapi's data changes
                 // const res = await fetchRes.json();
                 // return { data: res.data, status: res.request.status };
-                return [2 /*return*/, { data: products_json_1["default"], status: 200 }];
+                if (!(res.data instanceof Error))
+                    return [2 /*return*/, { data: products_json_1["default"], status: 200 }];
+                return [3 /*break*/, 3];
             case 2:
                 e_1 = _a.sent();
                 throw new Error(e_1.message);
@@ -90,7 +92,9 @@ exports.addProductToServer = toolkit_1.createAsyncThunk('addProductToServer', fu
                 return [4 /*yield*/, sharedInstance_1["default"].post('products', product)];
             case 1:
                 res = _a.sent();
-                return [2 /*return*/, res.data];
+                if (!(res.data instanceof Error))
+                    return [2 /*return*/, res.data];
+                return [3 /*break*/, 3];
             case 2:
                 e_2 = _a.sent();
                 console.log('adderr', e_2);
@@ -111,7 +115,9 @@ exports.modifyProduct = toolkit_1.createAsyncThunk('modifyProduct', function (_a
                     return [4 /*yield*/, sharedInstance_1["default"].put("/products/" + id, update)];
                 case 1:
                     res = _b.sent();
-                    return [2 /*return*/, res.data];
+                    if (!(res.data instanceof Error))
+                        return [2 /*return*/, res.data];
+                    return [3 /*break*/, 3];
                 case 2:
                     e_3 = _b.sent();
                     console.log('upderr', e_3);
@@ -130,7 +136,9 @@ exports.deleteProduct = toolkit_1.createAsyncThunk('deleteProduct', function (id
                 return [4 /*yield*/, sharedInstance_1["default"]["delete"]("/products/" + id)];
             case 1:
                 res = _a.sent();
-                return [2 /*return*/, { id: id, status: res.status, message: res.data }];
+                if (!(res.data instanceof Error))
+                    return [2 /*return*/, { id: id, status: res.status, message: res.data }];
+                return [3 /*break*/, 3];
             case 2:
                 e_4 = _a.sent();
                 console.log('delerr', e_4);

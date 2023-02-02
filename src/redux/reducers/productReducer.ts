@@ -13,7 +13,7 @@ export const fetchAllProducts = createAsyncThunk('fetchAllProducts', async () =>
     // const fetchRes = await fetch("/assets/products.json"); //Backup when fakeapi's data changes
     // const res = await fetchRes.json();
     // return { data: res.data, status: res.request.status };
-    return { data: product, status: 200 };
+    if (!(res.data instanceof Error)) return { data: product, status: 200 };
   } catch (e: any) {
     throw new Error(e.message);
   }
@@ -22,7 +22,7 @@ export const fetchAllProducts = createAsyncThunk('fetchAllProducts', async () =>
 export const addProductToServer = createAsyncThunk('addProductToServer', async (product: ProductAdd) => {
   try {
     const res: AxiosResponse<Product | Error, any> = await axiosInstance.post('products', product);
-    return res.data;
+    if (!(res.data instanceof Error)) return res.data;
   } catch (e) {
     console.log('adderr', e);
   }
@@ -32,7 +32,7 @@ export const addProductToServer = createAsyncThunk('addProductToServer', async (
 export const modifyProduct = createAsyncThunk('modifyProduct', async ({ id, update }: UpdatedProduct) => {
   try {
     const res: AxiosResponse<Product | Error, any> = await axiosInstance.put(`/products/${id}`, update);
-    return res.data;
+    if (!(res.data instanceof Error)) return res.data;
   } catch (e) {
     console.log('upderr', e);
   }
@@ -41,7 +41,7 @@ export const modifyProduct = createAsyncThunk('modifyProduct', async ({ id, upda
 export const deleteProduct = createAsyncThunk('deleteProduct', async (id: number) => {
   try {
     const res: AxiosResponse<string | Error, any> = await axiosInstance.delete(`/products/${id}`);
-    return { id: id, status: res.status, message: res.data };
+    if (!(res.data instanceof Error))  return { id: id, status: res.status, message: res.data };
   } catch (e) {
     console.log('delerr', e);
   }
