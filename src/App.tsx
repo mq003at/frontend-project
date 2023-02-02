@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Error from "./components/Basic/Error";
 import Cart from "./components/Cart/Cart";
@@ -18,7 +17,6 @@ import "./styles/css/index.css";
 
 const App = () => {
   const products = useAppSelector((state) => state.productReducer);
-  const user = useAppSelector(state => state.userReducer)
   const dispatch = useAppDispatch();
 
   // Get all products and categories available from the first page load

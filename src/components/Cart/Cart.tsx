@@ -1,15 +1,14 @@
-import ProductCard from '../Basic/ProductCard';
-import { CartPlacementProps } from '../../types/props';
-import React, { useEffect } from 'react';
+
+import React from 'react';
 import { Box, Typography } from '@mui/material';
 import ProductFullDetails from '../Products/ProductFullDetails';
 import { useAppSelector } from '../../hooks/reduxHook';
 import CardFullDetails from './CartFullDetails';
 
 const Cart: React.FC = () => {
-    const cart = useAppSelector((store) => store.cartReducer);
+  const cart = useAppSelector((store) => store.cartReducer);
 
-    return (
+  return (
     <Box className="cart__wrapper">
       {cart.type === undefined && cart.cart.length === 0 && <Typography>Nothing in here</Typography>}
       {cart.type === 'search' && (
@@ -22,10 +21,10 @@ const Cart: React.FC = () => {
       )}
       {cart.type === 'cart' && (
         <Box className="cart_cardsWrapper">
-            {cart.cart.length === 0 && <Typography className="cart__noItem">There is no product in your cart. Go to Product and start buying!</Typography>}
-            {cart.cart.map((cartProduct) => (
-                <CardFullDetails key={`cart-cart-${cartProduct.product.id}`} catName="" cartProduct={cartProduct} />
-            ))}
+          {cart.cart.length === 0 && <Typography className="cart__noItem">There is no product in your cart. Go to Product and start buying!</Typography>}
+          {cart.cart.map((cartProduct) => (
+            <CardFullDetails key={`cart-cart-${cartProduct.product.id}`} catName="" cartProduct={cartProduct} />
+          ))}
         </Box>
       )}
     </Box>

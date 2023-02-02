@@ -4,7 +4,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { UpdatedProduct } from '../../types/common';
 import axiosInstance from '../../test/shared/sharedInstance';
 // Backup when FAkeAPI changes
-import product from '../../assets/products.json';
+// import product from '../../assets/products.json';
 
 // Fetch all products from API; in case the fetch fails, use the backup one stored locally
 export const fetchAllProducts = createAsyncThunk('fetchAllProducts', async () => {
@@ -41,7 +41,7 @@ export const modifyProduct = createAsyncThunk('modifyProduct', async ({ id, upda
 export const deleteProduct = createAsyncThunk('deleteProduct', async (id: number) => {
   try {
     const res: AxiosResponse<string | Error, any> = await axiosInstance.delete(`/products/${id}`);
-    if (!(res.data instanceof Error))  return { id: id, status: res.status, message: res.data };
+    if (!(res.data instanceof Error)) return { id: id, status: res.status, message: res.data };
   } catch (e) {
     console.log('delerr', e);
   }
@@ -135,7 +135,6 @@ const productSlice = createSlice({
         else return state;
       })
 
-      
       .addCase(deleteProduct.fulfilled, (state, action) => {
         // We can use hasOwnProperty to check for the property
         if (action.payload !== undefined && action.payload.hasOwnProperty('id') && action.payload.hasOwnProperty('status')) {

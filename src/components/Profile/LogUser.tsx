@@ -1,9 +1,9 @@
-import { Box, Button, Card, CardContent, CardHeader, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
-import { Form, useFormik } from 'formik';
+import { Box, Button, Card, CardContent, Checkbox, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
+import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
 import * as Yup from 'yup';
-import { addUser, authCredential, clearEmailCheck, loginUser, validateEmail } from '../../redux/reducers/userReducer';
+import { addUser, authCredential} from '../../redux/reducers/userReducer';
 import { useNavigate } from 'react-router-dom';
 
 const LogUser: React.FC = (props) => {

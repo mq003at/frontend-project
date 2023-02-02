@@ -1,6 +1,6 @@
 import { setupServer } from "msw/node";
 import { rest } from "msw";
-import { Category, Product, UpdatedProduct } from "../../types/common";
+import { Category, Product } from "../../types/common";
 import { AccountCredential, SessionCredential, User } from "../../types/user";
 import jwt from "jsonwebtoken";
 

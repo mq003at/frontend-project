@@ -1,20 +1,14 @@
-import { Box, Card, CardContent, CardHeader, Grid, Icon, IconButton, List, ListItem, ListItemButton, ListItemText, Pagination, Slider, Typography } from "@mui/material";
+import { Box, Card, CardContent, Grid, List, ListItem, ListItemButton, ListItemText, Pagination, Slider, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { Category, Product } from "../../types/common";
-import { sortAllByPrice } from "../../redux/reducers/productReducer";
-import { store } from "../../redux/store";
-import { style } from "@mui/system";
-import ProductCard from "../Basic/ProductCard";
+import { useAppSelector } from "../../hooks/reduxHook";
+import { Product } from "../../types/common";
 import ProductPlacement from "../FrontPage/ProductPlacement";
 
 const ProductsList: React.FC = () => {
   const [isAsc, revertSort] = useState(true);
   const categoryList = useAppSelector((state) => state.categoryReducer);
   const products = useAppSelector((state) => state.productReducer);
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   let params = useParams() as unknown as string;
   let currentCat: any = "";
@@ -59,9 +53,9 @@ const ProductsList: React.FC = () => {
   }, [categoryList, chosenCat, products]);
 
   useEffect(() => {
-    setCurrentProducts((currentProducts) => currentProducts.filter((product) => product.price >= priceRange[0] && product.price <= priceRange[1]));
+    setCurrentProducts(products.filter((product: Product) => product.price >= priceRange[0] && product.price <= priceRange[1]));
     setCurrentPage(1)
-  }, [priceRange]);
+  }, [priceRange, products]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);

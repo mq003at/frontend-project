@@ -5,15 +5,13 @@ import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useEffect, useState } from "react";
-import { useFormik } from "formik";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
 import { updateCart } from "../../redux/reducers/cartReducer";
 
 const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (props) => {
   const { catName, product } = props;
   const [value, setValue] = useState(0);
-  const cart = useAppSelector((store) => store.cartReducer);
   const dispatch = useAppDispatch();
 
   const handleIncrease = () => {

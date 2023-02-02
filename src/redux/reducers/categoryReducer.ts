@@ -1,13 +1,12 @@
-import { red } from "@mui/material/colors";
-import { ActionReducerMapBuilder, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios, { AxiosError, AxiosResponse } from "axios";
-import axiosInstance from "../../test/shared/sharedInstance";
-import { AddCategoryWithImageParams, Category, ResponseImage, UpdatedCategory } from "../../types/common";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { AxiosError, AxiosResponse } from 'axios';
+import axiosInstance from '../../test/shared/sharedInstance';
+import { AddCategoryWithImageParams, Category, ResponseImage, UpdatedCategory } from '../../types/common';
 
 // Fetch all categories
-export const fetchAllCategories = createAsyncThunk("fetchAllCategory", async () => {
+export const fetchAllCategories = createAsyncThunk('fetchAllCategory', async () => {
   try {
-    const res: AxiosResponse<Category[] | Error, any> = await axiosInstance.get("categories");
+    const res: AxiosResponse<Category[] | Error, any> = await axiosInstance.get('categories');
     if (!(res.data instanceof Error)) return res.data;
   } catch (e) {
     const error = e as AxiosError;
@@ -16,9 +15,9 @@ export const fetchAllCategories = createAsyncThunk("fetchAllCategory", async () 
 });
 
 // Post in a category
-export const addCategoryToServer = createAsyncThunk("createCategoryToServer", async (category: Category) => {
+export const addCategoryToServer = createAsyncThunk('createCategoryToServer', async (category: Category) => {
   try {
-    const res: AxiosResponse<Category | Error, any> = await axiosInstance.post("categories", category);
+    const res: AxiosResponse<Category | Error, any> = await axiosInstance.post('categories', category);
     if (!(res.data instanceof Error)) return res.data;
   } catch (e) {
     const error = e as AxiosError;
@@ -27,7 +26,7 @@ export const addCategoryToServer = createAsyncThunk("createCategoryToServer", as
 });
 
 // Update category
-export const updateCategory = createAsyncThunk("updateCategory", async ({ id, update }: UpdatedCategory) => {
+export const updateCategory = createAsyncThunk('updateCategory', async ({ id, update }: UpdatedCategory) => {
   try {
     const res: any = await axiosInstance.put(`categories/${id}`, update);
     if (!(res.data instanceof Error)) return res.data;
@@ -38,13 +37,13 @@ export const updateCategory = createAsyncThunk("updateCategory", async ({ id, up
 });
 
 // Post Category but with image
-export const addCatAndImage = createAsyncThunk("addProductAndImage", async ({ image, category }: AddCategoryWithImageParams) => {
+export const addCatAndImage = createAsyncThunk('addProductAndImage', async ({ image, category }: AddCategoryWithImageParams) => {
   try {
-    let images: string = "";
-    const response: AxiosResponse<ResponseImage | Error, any> = await axiosInstance.post("/files/upload", image);
+    let images: string = '';
+    const response: AxiosResponse<ResponseImage | Error, any> = await axiosInstance.post('/files/upload', image);
     if (!(response.data instanceof Error) && response.data.location) images = response.data.location;
 
-    const res2: AxiosResponse<Category | Error, any> = await axiosInstance.post("products", {
+    const res2: AxiosResponse<Category | Error, any> = await axiosInstance.post('products', {
       ...category,
       images: images,
     });
@@ -55,9 +54,9 @@ export const addCatAndImage = createAsyncThunk("addProductAndImage", async ({ im
   }
 });
 
-const initialState: Category[] = []
+const initialState: Category[] = [];
 const categorySlice = createSlice({
-  name: "categorySlice",
+  name: 'categorySlice',
   initialState: initialState,
   reducers: {},
   extraReducers: (build) => {
@@ -73,9 +72,9 @@ const categorySlice = createSlice({
       })
 
       .addCase(updateCategory.fulfilled, (state, action) => {
-        if (!(action.payload instanceof AxiosError) && (action.payload !== undefined)) {
+        if (!(action.payload instanceof AxiosError) && action.payload !== undefined) {
           const data: Category = action.payload;
-          return state.map(cat => cat.id === data.id ? data : cat)
+          return state.map((cat) => (cat.id === data.id ? data : cat));
         } else return state;
       })
 

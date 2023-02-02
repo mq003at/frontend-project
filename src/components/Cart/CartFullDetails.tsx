@@ -1,15 +1,14 @@
 import { Card, Box, Typography, Grid, Button, TextField } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Slider from "react-slick";
 import { useAppSelector, useAppDispatch } from "../../hooks/reduxHook";
 import { updateCart } from "../../redux/reducers/cartReducer";
-import { CartProduct, Product } from "../../types/common";
+import { CartProduct } from "../../types/common";
 import DoneIcon from '@mui/icons-material/Done';
 
 const CardFullDetails: React.FC<{ catName: string; cartProduct: CartProduct }> = (props) => {
     const { catName, cartProduct } = props;
     const [value, setValue] = useState(cartProduct.quantity);
-    const cart = useAppSelector((store) => store.cartReducer);
     const dispatch = useAppDispatch();
   
     const handleIncrease = () => {
