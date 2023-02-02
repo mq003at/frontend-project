@@ -237,7 +237,7 @@ var productSlice = toolkit_1.createSlice({
     extraReducers: function (build) {
         build
             .addCase(exports.fetchAllProducts.fulfilled, function (state, action) {
-            if (action.payload && action.payload.data && action.payload.status === 200)
+            if (action.payload !== undefined && action.payload.data && action.payload.status === 200)
                 return action.payload.data;
             else
                 return state;
@@ -250,13 +250,13 @@ var productSlice = toolkit_1.createSlice({
             return state;
         })
             .addCase(exports.addProductToServer.fulfilled, function (state, action) {
-            if (action.payload)
+            if (action.payload !== undefined)
                 state.push(action.payload);
             else
                 return state;
         })
             .addCase(exports.modifyProduct.fulfilled, function (state, action) {
-            if (action.payload) {
+            if (action.payload !== undefined) {
                 return state.map(function (product) {
                     var _a;
                     if (!(action.payload instanceof Error) && product.id === ((_a = action.payload) === null || _a === void 0 ? void 0 : _a.id))
@@ -267,7 +267,7 @@ var productSlice = toolkit_1.createSlice({
         })
             .addCase(exports.deleteProduct.fulfilled, function (state, action) {
             // We can use hasOwnProperty to check for the property
-            if (action.payload && action.payload.hasOwnProperty('id') && action.payload.hasOwnProperty('status')) {
+            if (action.payload !== undefined && action.payload.hasOwnProperty('id') && action.payload.hasOwnProperty('status')) {
                 var _a = action.payload, id_1 = _a.id, status = _a.status, message = _a.message;
                 if (status === 200)
                     return state.filter(function (product) { return product.id !== id_1; });
@@ -280,7 +280,7 @@ var productSlice = toolkit_1.createSlice({
         })
             // Testing using spread operator
             .addCase(exports.addProductAndImage.fulfilled, function (state, action) {
-            if (action.payload)
+            if (action.payload !== undefined)
                 return __spreadArrays(state, [action.payload]);
             else
                 return __spreadArrays(state);

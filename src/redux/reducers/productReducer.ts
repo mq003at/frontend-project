@@ -116,7 +116,7 @@ const productSlice = createSlice({
   extraReducers: (build) => {
     build
       .addCase(fetchAllProducts.fulfilled, (state, action) => {
-        if (action.payload && action.payload.data && action.payload.status === 200) return action.payload.data;
+        if (action.payload !== undefined && action.payload.data && action.payload.status === 200) return action.payload.data;
         else return state;
       })
 
@@ -130,12 +130,12 @@ const productSlice = createSlice({
       })
 
       .addCase(addProductToServer.fulfilled, (state, action) => {
-        if (action.payload) state.push(action.payload);
+        if (action.payload !== undefined) state.push(action.payload);
         else return state;
       })
 
       .addCase(modifyProduct.fulfilled, (state, action) => {
-        if (action.payload) {
+        if (action.payload !== undefined) {
           return state.map((product: Product) => {
             if (!(action.payload instanceof Error) && product.id === action.payload?.id) return action.payload;
             return product;
@@ -145,7 +145,7 @@ const productSlice = createSlice({
 
       .addCase(deleteProduct.fulfilled, (state, action) => {
         // We can use hasOwnProperty to check for the property
-        if (action.payload && action.payload.hasOwnProperty('id') && action.payload.hasOwnProperty('status')) {
+        if (action.payload !== undefined && action.payload.hasOwnProperty('id') && action.payload.hasOwnProperty('status')) {
           const { id, status, message } = action.payload;
           if (status === 200) return state.filter((product: Product) => product.id !== id);
           else return state;
@@ -156,7 +156,7 @@ const productSlice = createSlice({
 
       // Testing using spread operator
       .addCase(addProductAndImage.fulfilled, (state, action) => {
-        if (action.payload) return [...state, action.payload];
+        if (action.payload !== undefined) return [...state, action.payload];
         else return [...state];
       });
   },
