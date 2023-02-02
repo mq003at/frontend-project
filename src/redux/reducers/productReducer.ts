@@ -13,7 +13,7 @@ export const fetchAllProducts = createAsyncThunk('fetchAllProducts', async () =>
     // const fetchRes = await fetch("/assets/products.json"); //Backup when fakeapi's data changes
     // const res = await fetchRes.json();
     // return { data: res.data, status: res.request.status };
-    if (!(res.data instanceof Error)) return { data: product, status: 200 };
+    if (!(res.data instanceof Error)) return { data: res.data, status: 200 };
   } catch (e: any) {
     throw new Error(e.message);
   }
@@ -32,7 +32,7 @@ export const addProductToServer = createAsyncThunk('addProductToServer', async (
 export const modifyProduct = createAsyncThunk('modifyProduct', async ({ id, update }: UpdatedProduct) => {
   try {
     const res: AxiosResponse<Product | Error, any> = await axiosInstance.put(`/products/${id}`, update);
-    if (!(res.data instanceof Error)) return res.data;
+    if (!(res.data instanceof Error) && res.data !== undefined) return res.data;
   } catch (e) {
     console.log('upderr', e);
   }
@@ -135,12 +135,14 @@ const productSlice = createSlice({
       })
 
       .addCase(modifyProduct.fulfilled, (state, action) => {
-        if (action.payload !== undefined) {
-          return state.map((product: Product) => {
-            if (!(action.payload instanceof Error) && product.id === action.payload?.id) return action.payload;
-            return product;
+        if (action.payload !== undefined && action.payload.id !== undefined) {
+          const mProduct = action.payload;
+          const newState = state.map((product: Product) => {
+            if (product.id === mProduct.id) return action.payload;
+            else return product;
           });
-        }
+          return newState
+        } else return state;
       })
 
       .addCase(deleteProduct.fulfilled, (state, action) => {

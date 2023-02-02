@@ -58,8 +58,6 @@ exports.__esModule = true;
 exports.sortAllByPrice = exports.sortAllByCategory = exports.findProduct = exports.addAll = exports.productReducer = exports.addProductAndImage = exports.deleteProduct = exports.modifyProduct = exports.addProductToServer = exports.fetchAllProducts = void 0;
 var toolkit_1 = require("@reduxjs/toolkit");
 var sharedInstance_1 = require("../../test/shared/sharedInstance");
-// Backup when FAkeAPI changes
-var products_json_1 = require("../../assets/products.json");
 // Fetch all products from API; in case the fetch fails, use the backup one stored locally
 exports.fetchAllProducts = toolkit_1.createAsyncThunk('fetchAllProducts', function () { return __awaiter(void 0, void 0, void 0, function () {
     var res, e_1;
@@ -74,7 +72,7 @@ exports.fetchAllProducts = toolkit_1.createAsyncThunk('fetchAllProducts', functi
                 // const res = await fetchRes.json();
                 // return { data: res.data, status: res.request.status };
                 if (!(res.data instanceof Error))
-                    return [2 /*return*/, { data: products_json_1["default"], status: 200 }];
+                    return [2 /*return*/, { data: res.data, status: 200 }];
                 return [3 /*break*/, 3];
             case 2:
                 e_1 = _a.sent();
@@ -115,7 +113,7 @@ exports.modifyProduct = toolkit_1.createAsyncThunk('modifyProduct', function (_a
                     return [4 /*yield*/, sharedInstance_1["default"].put("/products/" + id, update)];
                 case 1:
                     res = _b.sent();
-                    if (!(res.data instanceof Error))
+                    if (!(res.data instanceof Error) && res.data !== undefined)
                         return [2 /*return*/, res.data];
                     return [3 /*break*/, 3];
                 case 2:
@@ -264,14 +262,18 @@ var productSlice = toolkit_1.createSlice({
                 return state;
         })
             .addCase(exports.modifyProduct.fulfilled, function (state, action) {
-            if (action.payload !== undefined) {
-                return state.map(function (product) {
-                    var _a;
-                    if (!(action.payload instanceof Error) && product.id === ((_a = action.payload) === null || _a === void 0 ? void 0 : _a.id))
+            if (action.payload !== undefined && action.payload.id !== undefined) {
+                var mProduct_1 = action.payload;
+                var newState = state.map(function (product) {
+                    if (product.id === mProduct_1.id)
                         return action.payload;
-                    return product;
+                    else
+                        return product;
                 });
+                return newState;
             }
+            else
+                return state;
         })
             .addCase(exports.deleteProduct.fulfilled, function (state, action) {
             // We can use hasOwnProperty to check for the property
