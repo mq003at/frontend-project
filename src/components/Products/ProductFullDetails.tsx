@@ -5,11 +5,16 @@ import Slider from "react-slick";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useFormik } from "formik";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import { updateCart } from "../../redux/reducers/cartReducer";
 
 const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (props) => {
   const { catName, product } = props;
   const [value, setValue] = useState(0);
+  const cart = useAppSelector((store) => store.cartReducer);
+  const dispatch = useAppDispatch();
 
   const handleIncrease = () => {
     setValue(value + 1);
@@ -29,7 +34,13 @@ const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (pro
     initialSlide: 1,
   };
 
-  console.log("pr", product);
+  function handleButton() {
+    dispatch(updateCart({product: product, quantity: value}));
+  }
+
+  useEffect(() => {
+    console.log("cart", cart)
+  }, [cart])
 
   return (
     <Card className="product-f-details wrapper">
@@ -70,7 +81,7 @@ const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (pro
               />
               <Button onClick={handleIncrease}>+</Button>
             </Box>
-            <Button className="product-f-details shopIcon"><ShoppingCartIcon/></Button>
+            <Button className="product-f-details shopIcon" onClick={() => handleButton()}><ShoppingCartIcon/></Button>
           </Box>
           <Box>
             <Typography variant="subtitle1" textAlign={"left"}>

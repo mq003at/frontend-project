@@ -23,6 +23,7 @@ export const addProductToServer = createAsyncThunk('addProductToServer', async (
   try {
     console.log("product", product)
     const res: AxiosResponse<Product | Error, any> = await axiosInstance.post('products', product);
+    console.log("add", res.data);
     return res.data;
   } catch (e) {
     console.log('adderr', e);

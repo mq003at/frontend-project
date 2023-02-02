@@ -25,9 +25,16 @@ export interface ProductAdd extends Common {
     categoryId: number
 }
 
-export interface Cart {
+export interface CartProduct {
     product: Product
     quantity: number
+}
+
+export interface CartReducer {
+    cart: CartProduct[],
+    type?: "search" | "cart",
+    extras?: string
+    cartSearchResult?: Product[],
 }
 
 export interface ResponseImage {

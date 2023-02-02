@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { BrowserRouter, createBrowserRouter, Route, RouterProvider, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Error from "./components/Basic/Error";
-import AdminSettings from "./components/Cart/AdminSettings";
 import Cart from "./components/Cart/Cart";
 import FrontPage from "./components/FrontPage/FrontPage";
 import Header from "./components/Header/Header";
@@ -12,9 +11,8 @@ import LogUser from "./components/Profile/LogUser";
 import Profile from "./components/Profile/Profile";
 import { useAppDispatch, useAppSelector } from "./hooks/reduxHook";
 import { fetchAllCategories } from "./redux/reducers/categoryReducer";
-import { addAll, fetchAllProducts, sortAllByPrice } from "./redux/reducers/productReducer";
+import { fetchAllProducts } from "./redux/reducers/productReducer";
 import { makeSpecialOffersForUser } from "./redux/reducers/userReducer";
-import { store } from "./redux/store";
 
 import "./styles/css/index.css";
 

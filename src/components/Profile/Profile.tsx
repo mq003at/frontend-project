@@ -1,10 +1,9 @@
-import { ProfileProps } from '../../types/props';
-import { Box, Button, Card, CardContent, CardHeader, CardMedia, Checkbox, FormControlLabel, Grid, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
-import { Form, useFormik } from 'formik';
-import { useEffect, useState } from 'react';
+import { Box, Button, Card, CardContent, CardMedia, Grid, InputAdornment, MenuItem, TextField, Typography } from '@mui/material';
+import {  useFormik } from 'formik';
+import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
 import * as Yup from 'yup';
-import { addUser, authCredential, clearEmailCheck, loginUser, updateUser, validateEmail } from '../../redux/reducers/userReducer';
+import { updateUser } from '../../redux/reducers/userReducer';
 import { useNavigate } from 'react-router-dom';
 import { logOutCurrentUser } from '../../redux/reducers/userReducer';
 import { addProductToServer } from '../../redux/reducers/productReducer';
@@ -18,6 +17,8 @@ const Profile: React.FC = () => {
 
   useEffect(() => {
     if (!user.currentUser) navigate('/login');
+    if (!categories || categories.length === 0) navigate('/');
+    console.log('cat', categories);
   }, [user, navigate, categories]);
 
   const profileSchema = Yup.object().shape({
@@ -94,7 +95,7 @@ const Profile: React.FC = () => {
                   <Typography>{currentUser?.updatedAt?.substring(0, 10)}</Typography>
                 </Grid>
               </Grid>
-              <Typography>Do you want to change your profile?</Typography>
+              <Typography className="profile__sectionHeader">Do you want to change your profile?</Typography>
               <TextField
                 className="profile__textField"
                 id="name"
@@ -132,53 +133,55 @@ const Profile: React.FC = () => {
           </CardContent>
         </Card>
 
-        <Card className="profile__addProduct">
-          <CardContent>
-            <Typography>Add product to the system</Typography>
-            <form className="profile__addProductForm" onSubmit={addProductForm.handleSubmit}>
-              <Box className="profile__adProductWrapper">
-                <TextField
-                  id="productName"
-                  label="Product Name"
-                  className="profile__textField"
-                  {...addProductForm.getFieldProps('productName')}
-                  helperText={addProductForm.errors.productName ? addProductForm.errors.productName : ''}
-                  error={addProductForm.touched.productName && addProductForm.errors.productName !== undefined}
-                />
-                <TextField id="outlined-select-currency" select label="Select" defaultValue={categories[0].id}>
-                  {categories.map((option) => (
-                    <MenuItem key={`category-${option.name}`} value={option.id}>
-                      {option.name}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  id="productDescription"
-                  label="Product Description"
-                  className="profile__textField"
-                  {...addProductForm.getFieldProps('productDescription')}
-                  helperText={addProductForm.errors.productDescription ? addProductForm.errors.productDescription : ''}
-                  error={addProductForm.touched.productDescription && addProductForm.errors.productDescription !== undefined}
-                />
-                <TextField
-                  id="productPrice"
-                  label="Product Price"
-                  type="number"
-                  className="profile__textField"
-                  InputProps={{
-                    endAdornment: <InputAdornment position="end">EUR</InputAdornment>,
-                  }}
-                  {...addProductForm.getFieldProps('productPrice')}
-                  helperText={addProductForm.errors.productPrice ? addProductForm.errors.productPrice : ''}
-                  error={addProductForm.touched.productPrice && addProductForm.errors.productPrice !== undefined}
-                />
-              </Box>
-              <Box className="profile__addProductSubmit">
-                <Button type="submit">Add Product</Button>
-              </Box>
-            </form>
-          </CardContent>
-        </Card>
+        {categories.length > 0 && (
+          <Card className="profile__addProduct">
+            <CardContent>
+              <Typography className="profile__sectionHeader">Add product to the system</Typography>
+              <form className="profile__addProductForm" onSubmit={addProductForm.handleSubmit}>
+                <Box className="profile__adProductWrapper">
+                  <TextField
+                    id="productName"
+                    label="Product Name"
+                    className="profile__textField"
+                    {...addProductForm.getFieldProps('productName')}
+                    helperText={addProductForm.errors.productName ? addProductForm.errors.productName : ''}
+                    error={addProductForm.touched.productName && addProductForm.errors.productName !== undefined}
+                  />
+                  <TextField id="outlined-select-currency" select label="Select" defaultValue={categories[0].id}>
+                    {categories.map((option) => (
+                      <MenuItem key={`category-${option.name}`} value={option.id}>
+                        {option.name}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                  <TextField
+                    id="productDescription"
+                    label="Product Description"
+                    className="profile__textField"
+                    {...addProductForm.getFieldProps('productDescription')}
+                    helperText={addProductForm.errors.productDescription ? addProductForm.errors.productDescription : ''}
+                    error={addProductForm.touched.productDescription && addProductForm.errors.productDescription !== undefined}
+                  />
+                  <TextField
+                    id="productPrice"
+                    label="Product Price"
+                    type="number"
+                    className="profile__textField"
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">EUR</InputAdornment>,
+                    }}
+                    {...addProductForm.getFieldProps('productPrice')}
+                    helperText={addProductForm.errors.productPrice ? addProductForm.errors.productPrice : ''}
+                    error={addProductForm.touched.productPrice && addProductForm.errors.productPrice !== undefined}
+                  />
+                </Box>
+                <Box className="profile__addProductSubmit">
+                  <Button type="submit">Add Product</Button>
+                </Box>
+              </form>
+            </CardContent>
+          </Card>
+        )}
       </Box>
     </Box>
   );

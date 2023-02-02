@@ -1,8 +1,10 @@
 import { Product } from "./common"
 import { User } from "./user"
 
-export interface ProductProps {
-    
+export interface CartPlacementProps {
+    product: Product[]
+    type?: "cart" | "search"
+    extra?: string
 }
 
 export interface HeaderButtonProps {

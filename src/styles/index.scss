@@ -9,9 +9,9 @@
 }
 
 .frontpage,
-.products-page,
+.products-page.intro,
 .product-details {
-  margin-top: 5em;
+  margin-top: 8em;
 }
 
 .banner {
@@ -148,7 +148,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-image: url("../../assets/background.jpg");
+    background-image: url('../../assets/background.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     position: absolute;
@@ -176,6 +176,26 @@
     & .MuiFormControl-root {
       display: grid !important;
       margin: 10% 10% 5% 10%;
+    }
+  }
+}
+
+.profile {
+  &__wrapper {
+    margin-top: 7em;
+
+    & .MuiFormControl-root {
+      margin-left: 0.3em;
+      margin-right: 0.3em;
+    }
+  }
+  &__sectionHeader {
+    padding-bottom: 1em;
+  }
+  &__profileForm {
+    & img {
+      display: inline-block;
+      padding-bottom: 1em;
     }
   }
 }
