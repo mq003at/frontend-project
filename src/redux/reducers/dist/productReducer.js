@@ -46,6 +46,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArrays = (this && this.__spreadArrays) || function () {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
+};
 var _a;
 exports.__esModule = true;
 exports.sortAllByPrice = exports.sortAllByCategory = exports.findProduct = exports.addAll = exports.productReducer = exports.addProductAndImage = exports.deleteProduct = exports.modifyProduct = exports.addProductToServer = exports.fetchAllProducts = void 0;
@@ -274,9 +281,9 @@ var productSlice = toolkit_1.createSlice({
             // Testing using spread operator
             .addCase(exports.addProductAndImage.fulfilled, function (state, action) {
             if (action.payload)
-                return action.payload;
+                return __spreadArrays(state, [action.payload]);
             else
-                return state;
+                return __spreadArrays(state);
         });
     }
 });

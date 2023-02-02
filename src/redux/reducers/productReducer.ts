@@ -156,8 +156,8 @@ const productSlice = createSlice({
 
       // Testing using spread operator
       .addCase(addProductAndImage.fulfilled, (state, action) => {
-        if (action.payload) return action.payload;
-        else return state;
+        if (action.payload) return [...state, action.payload];
+        else return [...state];
       });
   },
 });
