@@ -1,16 +1,15 @@
-import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import { productReducer } from "./reducers/productReducer";
-import { userReducer } from "./reducers/userReducer";
-import { categoryReducer } from "./reducers/categoryReducer";
-import { cartReducer } from "./reducers/cartReducer";
-
+import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
+import { productReducer } from './reducers/productReducer';
+import { userReducer } from './reducers/userReducer';
+import { categoryReducer } from './reducers/categoryReducer';
+import { cartReducer } from './reducers/cartReducer';
 
 export const store = configureStore({
   reducer: {
     productReducer,
     userReducer,
     categoryReducer,
-    cartReducer
+    cartReducer,
   },
 });
 

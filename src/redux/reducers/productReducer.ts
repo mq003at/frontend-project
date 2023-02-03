@@ -3,6 +3,7 @@ import { AddProductWithImageParams, Product, ProductAdd, ResponseImage } from '.
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { UpdatedProduct } from '../../types/common';
 import axiosInstance from '../../test/shared/sharedInstance';
+import { addNotification } from '../../components/Functions/common';
 // Backup when FAkeAPI changes
 // import product from '../../assets/products.json';
 
@@ -22,9 +23,12 @@ export const fetchAllProducts = createAsyncThunk('fetchAllProducts', async () =>
 export const addProductToServer = createAsyncThunk('addProductToServer', async (product: ProductAdd) => {
   try {
     const res: AxiosResponse<Product | Error, any> = await axiosInstance.post('products', product);
-    if (!(res.data instanceof Error)) return res.data;
+    if (!(res.data instanceof Error)) {
+      addNotification('Product added', `${product.title} has been added to the server`, 'success');
+    }
   } catch (e) {
-    console.log('adderr', e);
+    const error = e as AxiosError;
+    addNotification(`ERROR ${error.code}`, `${error.message}`, 'danger');
   }
 });
 
@@ -34,7 +38,8 @@ export const modifyProduct = createAsyncThunk('modifyProduct', async ({ id, upda
     const res: AxiosResponse<Product | Error, any> = await axiosInstance.put(`/products/${id}`, update);
     if (!(res.data instanceof Error) && res.data !== undefined) return res.data;
   } catch (e) {
-    console.log('upderr', e);
+    const error = e as AxiosError;
+    addNotification(`ERROR ${error.code}`, `${error.message}`, 'danger');
   }
 });
 
@@ -43,7 +48,8 @@ export const deleteProduct = createAsyncThunk('deleteProduct', async (id: number
     const res: AxiosResponse<string | Error, any> = await axiosInstance.delete(`/products/${id}`);
     if (!(res.data instanceof Error)) return { id: id, status: res.status, message: res.data };
   } catch (e) {
-    console.log('delerr', e);
+    const error = e as AxiosError;
+    addNotification(`ERROR ${error.code}`, `${error.message}`, 'danger');
   }
 });
 

@@ -10,9 +10,9 @@ const HeaderButton: React.FC<HeaderButtonProps> = (props) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (props.text.toLowerCase() === 'carts') dispatch(switchCart({ type: 'cart', extras: "" }))
-  }, [dispatch, props.text])
-  
+    if (props.text.toLowerCase() === 'carts') dispatch(switchCart({ type: 'cart', extras: '' }));
+  }, [dispatch, props.text]);
+
   return (
     <Grid item xs={4}>
       <Button variant="text" onClick={() => navigate(`${props.text.toLowerCase()}`)}>

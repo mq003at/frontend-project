@@ -1,10 +1,8 @@
-import { AppBar, Box, Button, Typography, Grid, InputAdornment, TextField } from '@mui/material';
-import { Fragment, useEffect, useState } from 'react';
+import { AppBar, Box, Button, Grid, InputAdornment, TextField } from '@mui/material';
+import {  useState } from 'react';
 import Banner from './Banner';
 import HeaderButton from './HeaderButton';
 import SearchIcon from '@mui/icons-material/Search';
-import { Search } from '@mui/icons-material';
-import InputBase from '@mui/material/InputBase';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHook';
 import { Product } from '../../types/common';
@@ -15,15 +13,14 @@ const Header: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const product = useAppSelector((state) => state.productReducer)
+  const product = useAppSelector((state) => state.productReducer);
 
   const handleSearch = () => {
     const result = product.filter((product: Product) => product.title.includes(searchTerm));
     dispatch(extraCart(result));
-    dispatch(switchCart({type: "search", extras: searchTerm}))
-    navigate("carts");
+    dispatch(switchCart({ type: 'search', extras: searchTerm }));
+    navigate('carts');
   };
-
 
   const makeNavButton = (text: string) => {
     return (
@@ -42,7 +39,7 @@ const Header: React.FC = () => {
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
             InputProps={{
-              startAdornment:<InputAdornment position="start">Search</InputAdornment>,
+              startAdornment: <InputAdornment position="start">Search</InputAdornment>,
               endAdornment: (
                 <InputAdornment position="end">
                   <Button onClick={handleSearch}>

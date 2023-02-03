@@ -1,17 +1,17 @@
-import { Card, Box, Typography, Grid, Button, TextField } from "@mui/material";
-import { Product } from "../../types/common";
+import { Card, Box, Typography, Grid, Button, TextField } from '@mui/material';
+import { Product } from '../../types/common';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import Slider from "react-slick";
+import Slider from 'react-slick';
 
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
-import { updateCart } from "../../redux/reducers/cartReducer";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { useState } from 'react';
+import { useAppDispatch } from '../../hooks/reduxHook';
+import { updateCart } from '../../redux/reducers/cartReducer';
 
 const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (props) => {
   const { catName, product } = props;
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(1);
   const dispatch = useAppDispatch();
 
   const handleIncrease = () => {
@@ -19,7 +19,7 @@ const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (pro
   };
 
   const handleDecrease = () => {
-    if (value > 0) setValue(value - 1);
+    if (value > 1) setValue(value - 1);
   };
 
   const settings = {
@@ -33,18 +33,20 @@ const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (pro
   };
 
   function handleButton() {
-    dispatch(updateCart({product: product, quantity: value}));
+    dispatch(updateCart({ product: product, quantity: value }));
   }
 
   return (
     <Card className="product-f-details wrapper">
-      <Box className="product-f-details show-cat" textAlign={"left"}>
-        <Typography  marginLeft={"1.25em"} padding={"0.5em 0.5em"} color="text.secondary">{">"} {product.category.name}</Typography>
+      <Box className="product-f-details show-cat" textAlign={'left'}>
+        <Typography marginLeft={'1.25em'} padding={'0.5em 0.5em'} color="text.secondary">
+          {'>'} {product.category.name}
+        </Typography>
       </Box>
 
       <Grid container>
         <Grid item xs={4}>
-          <Box paddingBottom={"2em"} paddingLeft={"1em"} paddingRight={"1em"}>
+          <Box paddingBottom={'2em'} paddingLeft={'1em'} paddingRight={'1em'}>
             <Slider {...settings}>
               {product.images.map((image) => (
                 <div className="product-f-details-imgwrapper" key={`fullDetail-${image}`}>
@@ -56,18 +58,18 @@ const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (pro
         </Grid>
 
         <Grid item xs={8}>
-          <Box className="product-f-details mainInfo" textAlign={"left"}>
+          <Box className="product-f-details mainInfo" textAlign={'left'}>
             <Typography className="product-f-details title">{product.title}</Typography>
             <Typography className="product-f-details price">{product.price} EUR.</Typography>
           </Box>
           <Box className="product-f-details buyout-container">
-            <Box className="product-f-details incBox" textAlign={"left"}>
+            <Box className="product-f-details incBox" textAlign={'left'}>
               <Button onClick={handleDecrease}>-</Button>
               <TextField
                 className="product-f-details incInput"
                 variant="outlined"
                 value={value}
-                type={"nummber"}
+                type={'nummber'}
                 InputLabelProps={{
                   shrink: true,
                 }}
@@ -75,11 +77,13 @@ const ProductFullDetails: React.FC<{ catName: string; product: Product }> = (pro
               />
               <Button onClick={handleIncrease}>+</Button>
             </Box>
-            <Button className="product-f-details shopIcon" onClick={() => handleButton()}><ShoppingCartIcon/></Button>
+            <Button className="product-f-details shopIcon" onClick={() => handleButton()}>
+              <ShoppingCartIcon />
+            </Button>
           </Box>
           <Box>
-            <Typography variant="subtitle1" textAlign={"left"}>
-                {product.description}
+            <Typography variant="subtitle1" textAlign={'left'}>
+              {product.description}
             </Typography>
           </Box>
         </Grid>

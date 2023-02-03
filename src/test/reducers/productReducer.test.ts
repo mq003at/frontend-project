@@ -1,7 +1,7 @@
-import { addProductAndImage, addProductToServer, deleteProduct, fetchAllProducts, modifyProduct, sortAllByCategory, sortAllByPrice } from "../../redux/reducers/productReducer";
-import { store } from "../../redux/store";
-import { Product } from "../../types/common";
-import server from "../shared/server";
+import { addProductAndImage, addProductToServer, deleteProduct, fetchAllProducts, modifyProduct, sortAllByCategory, sortAllByPrice } from '../../redux/reducers/productReducer';
+import { store } from '../../redux/store';
+import { Product } from '../../types/common';
+import server from '../shared/server';
 
 // Import server from shared, this will be a mock server and would be used when the project start
 beforeAll(() => server.listen());

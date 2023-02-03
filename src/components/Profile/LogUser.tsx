@@ -15,7 +15,6 @@ const LogUser: React.FC = (props) => {
   const [isRememberMe, setIsRemember] = useState(false);
   // const [isEmailAvailable, setEmailAvailable] = useState<boolean | null>(null);
 
-
   useEffect(() => {
     if (user.currentUser) {
       navigate("/profile");

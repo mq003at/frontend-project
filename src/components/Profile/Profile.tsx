@@ -18,7 +18,6 @@ const Profile: React.FC = () => {
   useEffect(() => {
     if (!user.currentUser) navigate('/login');
     if (!categories || categories.length === 0) navigate('/');
-    console.log('cat', categories);
   }, [user, navigate, categories]);
 
   const profileSchema = Yup.object().shape({

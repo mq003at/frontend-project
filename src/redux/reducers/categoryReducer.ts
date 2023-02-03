@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { AxiosError, AxiosResponse } from 'axios';
+import { addNotification } from '../../components/Functions/common';
 import axiosInstance from '../../test/shared/sharedInstance';
 import { AddCategoryWithImageParams, Category, ResponseImage, UpdatedCategory } from '../../types/common';
 
@@ -10,7 +11,7 @@ export const fetchAllCategories = createAsyncThunk('fetchAllCategory', async () 
     if (!(res.data instanceof Error)) return res.data;
   } catch (e) {
     const error = e as AxiosError;
-    return error;
+    addNotification(`ERROR ${error.code}`, `${error.message}`, 'danger');
   }
 });
 
@@ -21,7 +22,7 @@ export const addCategoryToServer = createAsyncThunk('createCategoryToServer', as
     if (!(res.data instanceof Error)) return res.data;
   } catch (e) {
     const error = e as AxiosError;
-    return error;
+    addNotification(`ERROR ${error.code}`, `${error.message}`, 'danger');
   }
 });
 
@@ -32,7 +33,7 @@ export const updateCategory = createAsyncThunk('updateCategory', async ({ id, up
     if (!(res.data instanceof Error)) return res.data;
   } catch (e) {
     const error = e as AxiosError;
-    return error;
+    addNotification(`ERROR ${error.code}`, `${error.message}`, 'danger');
   }
 });
 

@@ -1,9 +1,9 @@
-import { Box, Card, CardContent, Grid, List, ListItem, ListItemButton, ListItemText, Pagination, Slider, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAppSelector } from "../../hooks/reduxHook";
-import { Product } from "../../types/common";
-import ProductPlacement from "../FrontPage/ProductPlacement";
+import { Box, Card, CardContent, Grid, List, ListItem, ListItemButton, ListItemText, Pagination, Slider, Typography } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppSelector } from '../../hooks/reduxHook';
+import { Product } from '../../types/common';
+import ProductPlacement from '../FrontPage/ProductPlacement';
 
 const ProductsList: React.FC = () => {
   const [isAsc, revertSort] = useState(true);
@@ -11,7 +11,7 @@ const ProductsList: React.FC = () => {
   const products = useAppSelector((state) => state.productReducer);
   const navigate = useNavigate();
   let params = useParams() as unknown as string;
-  let currentCat: any = "";
+  let currentCat: any = '';
   if (params) currentCat = params;
 
   const [currentProducts, setCurrentProducts] = useState<Product[]>([]);
@@ -27,7 +27,7 @@ const ProductsList: React.FC = () => {
     let tempArr: Product[] = [];
     if (currentCat.category && categoryList.length > 0 && products.length > 0) {
       const a = categoryList.find((cat) => cat.name === currentCat.category);
-      if (a === undefined) navigate("/error");
+      if (a === undefined) navigate('/error');
       else {
         tempArr = products.filter((product: Product) => product.category.name === a.name);
         if (a.id) setChosenCat(a.id);
@@ -54,7 +54,7 @@ const ProductsList: React.FC = () => {
 
   useEffect(() => {
     setCurrentProducts(products.filter((product: Product) => product.price >= priceRange[0] && product.price <= priceRange[1]));
-    setCurrentPage(1)
+    setCurrentPage(1);
   }, [priceRange, products]);
 
   const handleChange = (event: Event, newValue: number | number[]) => {
@@ -88,23 +88,33 @@ const ProductsList: React.FC = () => {
       </Box>
 
       <Box className="products-page products">
-        <Grid container spacing={"4em"}>
+        <Grid container spacing={'4em'}>
           <Grid item xs={3}>
-            <Box textAlign={"left"}>
+            <Box textAlign={'left'}>
               <Box>
                 <Typography variant="h6" component="div">
                   Price
                 </Typography>
-                {minMaxPrice.length > 0 && <Slider getAriaLabel={() => "Temperature range"} value={priceRange} onChange={handleChange} valueLabelDisplay="auto" getAriaValueText={valuetext} min={minMaxPrice[0]} max={minMaxPrice[1]} />}
+                {minMaxPrice.length > 0 && (
+                  <Slider
+                    getAriaLabel={() => 'Temperature range'}
+                    value={priceRange}
+                    onChange={handleChange}
+                    valueLabelDisplay="auto"
+                    getAriaValueText={valuetext}
+                    min={minMaxPrice[0]}
+                    max={minMaxPrice[1]}
+                  />
+                )}
                 <List>
                   <ListItem disablePadding>
                     <ListItemButton selected={isAsc === true && true} onClick={() => revertSort(!isAsc)}>
-                      <ListItemText primary={"Ascending"} />
+                      <ListItemText primary={'Ascending'} />
                     </ListItemButton>
                   </ListItem>
                   <ListItem disablePadding>
                     <ListItemButton selected={isAsc === false && true} onClick={() => revertSort(!isAsc)}>
-                      <ListItemText primary={"Descending"} />
+                      <ListItemText primary={'Descending'} />
                     </ListItemButton>
                   </ListItem>
                 </List>
@@ -127,13 +137,13 @@ const ProductsList: React.FC = () => {
           </Grid>
 
           <Grid item xs={9}>
-            <Box textAlign={"left"}>
+            <Box textAlign={'left'}>
               <Typography variant="h6" component="div">
                 Products
               </Typography>
             </Box>
 
-            <Box sx={{ display: "flex", flexWrap: "wrap", p: 1, m: 1, bgcolor: "background.paper", borderRadius: 1 }}>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', p: 1, m: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
               {viewProducts.map((product) => (
                 <ProductPlacement key={`productLis-${product.id}`} size={50} product={product} isOnSale={false} isHideDescription={true} />
               ))}

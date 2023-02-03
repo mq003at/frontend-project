@@ -1,7 +1,7 @@
-import { authCredential, fetchAllUsers, loginUser, userReducer } from "../../redux/reducers/userReducer";
-import server from "../shared/server";
-import { store } from "../../redux/store";
-import { AccountCredential } from "../../types/user";
+import { authCredential, fetchAllUsers, loginUser, userReducer } from '../../redux/reducers/userReducer';
+import server from '../shared/server';
+import { store } from '../../redux/store';
+import { AccountCredential } from '../../types/user';
 
 // Import server from shared, this will be a mock server and would be used when the project start
 beforeAll(() => server.listen());
